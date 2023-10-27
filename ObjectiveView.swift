@@ -16,7 +16,6 @@ struct ObjectiveView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
-            
             VStack {
                 HStack {
                     Button(action: {
@@ -34,8 +33,11 @@ struct ObjectiveView: View {
                 
                 VStack {
                     Image("Logo icon")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
                         .cornerRadius(20)
                         .padding(.top,-140)
+                        .scaleEffect(1)
                     VStack{
                         Text("Sparklers aim to provide a user-friendly interface for the general public to broaden their knowledge base")
                             .foregroundColor(.black)
