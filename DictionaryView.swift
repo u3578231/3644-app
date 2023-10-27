@@ -9,6 +9,9 @@ import SwiftUI
 
 struct DictionaryView: View {
     @State private var searchText = ""
+    @Binding var navigateToPlayMenu: Bool
+    //@State private var navigateToDictionary = false
+    let username: String
     let websiteURL = "https://www.tutorialspoint.com/artificial_intelligence/index.htm"
 
     var filteredWords: [String] {
@@ -20,7 +23,6 @@ struct DictionaryView: View {
     }
 
     var body: some View {
-        NavigationView {
             ZStack{
                 Image("background") // Set the desired image as the background
                     .resizable()
@@ -34,7 +36,7 @@ struct DictionaryView: View {
                             .padding(.top,70)
                         List(filteredWords, id: \.self) { word in
                             NavigationLink(
-                                destination: DictionaryWordView(word: word)
+                                destination: DictionaryWordView(word: word, navigateToPlayMenu: $navigateToPlayMenu, username: username)
                             ) {
                                 Text(word)
                             }
@@ -51,9 +53,23 @@ struct DictionaryView: View {
                     }
                     .scrollContentBackground(.hidden)
                 }
+                NavigationLink(destination: PlayMenu(shuffle_question_set: 0, username: username), isActive: $navigateToPlayMenu) {
+                    EmptyView()
+                }
+                .navigationBarBackButtonHidden(true)
                 .navigationBarTitleDisplayMode(.inline)
-                .navigationBarItems(leading: LargeTitleNavBarTitle(text: "Dictionary"))
+                .navigationBarItems(leading: backButton,
+                    trailing: LargeTitleNavBarTitle(text: "Dictionary")
+                )
             }
+    }
+    private var backButton: some View {
+        Button(action: {
+            navigateToPlayMenu = true // Set navigateToPlayMenu to true
+        }) {
+            Image(systemName: "chevron.left")
+                .font(.title)
+                .foregroundColor(.blue)
         }
     }
 }
@@ -69,6 +85,8 @@ struct LargeTitleNavBarTitle: View {
 
 struct DictionaryWordView: View {
     let word: String
+    @Binding var navigateToPlayMenu: Bool
+    let username: String
     var body: some View {
         ZStack{
             VStack {
@@ -97,7 +115,7 @@ struct DictionaryWordView: View {
                             .padding()
                             .frame(maxWidth: .infinity, alignment: .top) // Align the overlay content to the top
                             .background(Color.white) // Optional: Add a background color to the overlay content
-                            .padding(.bottom, -80) // Add spacing between the overlay and the images
+                            .padding(.bottom, -50) // Add spacing between the overlay and the images
                             .opacity(0.9)
                         }
                     }
@@ -105,7 +123,9 @@ struct DictionaryWordView: View {
                 )
             }
         }
-        .navigationBarHidden(true)
+        NavigationLink(destination: PlayMenu(shuffle_question_set: 0, username: username), isActive: $navigateToPlayMenu) {
+            EmptyView()
+        }
     }
 }
 
@@ -133,7 +153,7 @@ struct SectionBox: View {
 
 struct DictionaryView_Previews: PreviewProvider {
     static var previews: some View {
-        DictionaryView()
+        WelcomeView()
     }
 }
 struct GenerateImageView: View {
