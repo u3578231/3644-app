@@ -18,6 +18,7 @@ struct ContentView_no_time_limit: View {
     @State var isShowingNextView = false
     @State private var showAlert = false
     @State private var alertMessage = ""
+    @State private var navigateToDictionary = false
     @State private var selectedq1Answer = ""
     @Binding private var currentMark: Double
     @State private var showTips = false
@@ -134,6 +135,12 @@ struct ContentView_no_time_limit: View {
                     }) {
                         Label("Overview", systemImage: "info.circle")
                     }
+                    Button(action: {
+                        showAlert = true
+                        alertMessage = "Are you sure you want to go to Dictionary?"
+                    }) {
+                        Label("Dictionary", systemImage: "book.circle")
+                    }
                 } label: {
                     Image(systemName: "line.horizontal.3")
                         .imageScale(.large)
@@ -151,6 +158,12 @@ struct ContentView_no_time_limit: View {
                 }
                 .hidden()
             )
+            .background(
+                NavigationLink(destination: DictionaryView(navigateToPlayMenu: $navigateToPlayMenu,username: username), isActive: $navigateToDictionary) {
+                        EmptyView()
+                    }
+                    .hidden()
+            )
         }
         .alert(isPresented: $showAlert) {
             Alert(
@@ -162,6 +175,9 @@ struct ContentView_no_time_limit: View {
                         navigateToPlayMenu = true
                     } else if alertMessage == "Are you sure you want to go to Overview?" {
                         navigateToOverview = true
+                    }
+                    else if alertMessage == "Are you sure you want to go to Dictionary?"{
+                        navigateToDictionary = true
                     }
                 })
             )
@@ -195,6 +211,7 @@ struct Question2View_no_time_limit: View {
     @State var isShowingNextView = false
     @State private var showAlert = false
     @State private var alertMessage = ""
+    @State private var navigateToDictionary = false
     @State private var selectedq2Answer = ""
     @State private var q2_mark : Double = 0
     var generatedShuffleQuestionSet: Int
@@ -308,6 +325,12 @@ struct Question2View_no_time_limit: View {
                     }) {
                         Label("Overview", systemImage: "info.circle")
                     }
+                    Button(action: {
+                        showAlert = true
+                        alertMessage = "Are you sure you want to go to Dictionary?"
+                    }) {
+                        Label("Dictionary", systemImage: "book.circle")
+                    }
                 } label: {
                     Image(systemName: "line.horizontal.3")
                         .imageScale(.large)
@@ -325,6 +348,12 @@ struct Question2View_no_time_limit: View {
                 }
                 .hidden()
             )
+            .background(
+                NavigationLink(destination: DictionaryView(navigateToPlayMenu: $navigateToPlayMenu, username: username), isActive: $navigateToDictionary) {
+                    EmptyView()
+                }
+                .hidden()
+            )
         }
         .alert(isPresented: $showAlert) {
             Alert(
@@ -336,6 +365,9 @@ struct Question2View_no_time_limit: View {
                         navigateToPlayMenu = true
                     } else if alertMessage == "Are you sure you want to go to Overview?" {
                         navigateToOverview = true
+                    }
+                    else if alertMessage == "Are you sure you want to go to Dictionary?" {
+                        navigateToDictionary = true
                     }
                 })
             )
@@ -368,6 +400,7 @@ struct Question3View_no_time_limit: View {
     @State private var showMenu = false
     @State private var showResultView = false
     @State private var showAlert = false
+    @State private var navigateToDictionary = false
     @State private var alertMessage = ""
     @Binding private var currentMark: Double
     @State private var selectedq3Answer = ""
@@ -515,6 +548,12 @@ struct Question3View_no_time_limit: View {
                     }) {
                         Label("Overview", systemImage: "info.circle")
                     }
+                    Button(action: {
+                        showAlert = true
+                        alertMessage = "Are you sure you want to go to Dictionary?"
+                    }) {
+                        Label("Dictionary", systemImage: "book.circle")
+                    }
                 } label: {
                     Image(systemName: "line.horizontal.3")
                         .imageScale(.large)
@@ -532,6 +571,12 @@ struct Question3View_no_time_limit: View {
                 }
                 .hidden()
             )
+            .background(
+                NavigationLink(destination: DictionaryView(navigateToPlayMenu: $navigateToPlayMenu,username: username), isActive: $navigateToDictionary) {
+                    EmptyView()
+                }
+                .hidden()
+            )
         }
         .alert(isPresented: $showAlert) {
             Alert(
@@ -543,6 +588,9 @@ struct Question3View_no_time_limit: View {
                         navigateToPlayMenu = true
                     } else if alertMessage == "Are you sure you want to go to Overview?" {
                         navigateToOverview = true
+                    }
+                    else if alertMessage == "Are you sure you want to go to Dictionary?" {
+                        navigateToDictionary = true
                     }
                 })
             )
