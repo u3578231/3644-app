@@ -15,7 +15,7 @@ struct PlayMenu: View {
     @State private var navigateToPlayMenu = false
     @State private var navigateToOverview = false
     @State private var showMenu = false
-    
+    @State private var navigateToDictionary = false
     var body: some View {
         ZStack {
             Image("background")
@@ -37,7 +37,7 @@ struct PlayMenu: View {
                     }
                     
                     Section(header: Text("Learning")) {
-                        NavigationLink(destination: DictionaryView()){
+                        NavigationLink(destination: DictionaryView(navigateToPlayMenu: $navigateToPlayMenu,username: username)){
                             Text("Dictionary")
                         }
                         NavigationLink(destination: ChartView(username: username)){
@@ -53,9 +53,7 @@ struct PlayMenu: View {
                 .navigationBarBackButtonHidden(true)
                 .navigationBarItems(
                     leading: backButton,
-                    trailing: Button(action: {
-                        // Handle profile icon tapped
-                    }) {
+                    trailing: NavigationLink(destination: ProfileView(username: username)) {
                         Image(systemName: "person.circle")
                             .font(.system(size: 24))
                     }
