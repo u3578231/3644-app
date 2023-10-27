@@ -93,6 +93,7 @@ struct ContentView_time_limit: View {
     @State private var pausedTimeRemaining = 0
     @State private var currentquestion_mark = 0
     @State private var previousAnswer = ""
+    @State private var navigateToDictionary = false
     @State private var selectedMenuItem = 0
     @State private var show_OK_Alert = false
     @Binding private var currentMark : Double
@@ -179,6 +180,11 @@ struct ContentView_time_limit: View {
                         }) {
                             Label("Overview", systemImage: "info.circle")
                         }
+                        Button(action: {
+                            handleMenuItemSelection(2) // Overview
+                        }) {
+                            Label("Dictionary", systemImage: "book.circle")
+                        }
                     } label: {
                         Image(systemName: "line.horizontal.3")
                             .imageScale(.large)
@@ -196,6 +202,12 @@ struct ContentView_time_limit: View {
                     }
                         .hidden()
                 )
+                .background(
+                    NavigationLink(destination: DictionaryView(navigateToPlayMenu:$navigateToPlayMenu,username: username), isActive: $navigateToDictionary) {
+                            EmptyView()
+                        }
+                        .hidden()
+                )
             }
             .alert(isPresented: $showAlert) {
                 Alert(
@@ -211,6 +223,9 @@ struct ContentView_time_limit: View {
                         } else if alertMessage == "You will lose your progress if you go to Overview" {
                             navigateToOverview = true
                             timerManager.stopTimer()
+                        }
+                        else if alertMessage == "You will lose your progress if you go to Dictionary"{
+                            navigateToDictionary = true
                         }
                     })
                 )
@@ -259,6 +274,11 @@ struct ContentView_time_limit: View {
             print("showAlert =", showAlert)
             timerManager.stopTimer()
             alertMessage = "You will lose your progress if you go to Overview"
+        case 2: // Dictionary
+            showAlert = true
+            print("showAlert =", showAlert)
+            timerManager.stopTimer()
+            alertMessage = "You will lose your progress if you go to Dictionary"
         default:
             break
         }
@@ -284,6 +304,7 @@ struct Question2View_time_limit: View {
     @State private var showAlert = false
     @State private var navigateToPlayMenu = false
     @State private var alertMessage = ""
+    @State private var navigateToDictionary = false
     @State private var show_OK_Alert = false
     @State private var pausedTimeRemaining = 0
     @Binding private var wrongQArray: [Int]
@@ -372,6 +393,11 @@ struct Question2View_time_limit: View {
                         }) {
                             Label("Overview", systemImage: "info.circle")
                         }
+                        Button(action: {
+                            handleMenuItemSelection(2) // Overview
+                        }) {
+                            Label("Dictionary", systemImage: "book.circle")
+                        }
                     } label: {
                         Image(systemName: "line.horizontal.3")
                             .imageScale(.large)
@@ -389,6 +415,12 @@ struct Question2View_time_limit: View {
                     }
                         .hidden()
                 )
+                .background(
+                    NavigationLink(destination: DictionaryView( navigateToPlayMenu: $navigateToPlayMenu,username: username), isActive: $navigateToDictionary) {
+                            EmptyView()
+                        }
+                        .hidden()
+                )
             }
             .alert(isPresented: $showAlert) {
                 Alert(
@@ -404,6 +436,10 @@ struct Question2View_time_limit: View {
                             navigateToOverview = true
                             timerManager.stopTimer()
                         }
+                        else if alertMessage == "You will lose your progress if you go to Dictionary"{
+                            navigateToDictionary = true
+                        }
+                                    
                     })
                 )
             }
@@ -454,6 +490,11 @@ struct Question2View_time_limit: View {
             print("showAlert =", showAlert)
             timerManager.stopTimer()
             alertMessage = "You will lose your progress if you go to Overview"
+        case 2: // Dictionary
+            showAlert = true
+            print("showAlert =", showAlert)
+            timerManager.stopTimer()
+            alertMessage = "You will lose your progress if you go to Dictionary"
         default:
             break
         }
@@ -482,6 +523,7 @@ struct Question3View_time_limit: View {
     @State private var pausedTimeRemaining = 0
     @State private var show_OK_Alert = false
     @State private var showResultView = false
+    @State private var navigateToDictionary = false
     @Binding private var wrongQArray : [Int]
     var q1_mark: Double
     var q2_mark: Double
@@ -595,16 +637,21 @@ struct Question3View_time_limit: View {
                     }) {
                         Label("PlayMenu", systemImage: "play")
                     }
-                    
                     Button(action: {
                         handleMenuItemSelection(1) // Overview
                     }) {
                         Label("Overview", systemImage: "info.circle")
                     }
+                    Button(action: {
+                        handleMenuItemSelection(2) // Overview
+                    }) {
+                        Label("Dictionary", systemImage: "book.circle")
+                    }
                 } label: {
                     Image(systemName: "line.horizontal.3")
                         .imageScale(.large)
                 }
+                
             )
             .background(
                 NavigationLink(destination: OverviewView(showMenu: $showMenu, navigateToPlayMenu: $navigateToPlayMenu, username: username), isActive: $navigateToOverview) {
@@ -617,6 +664,12 @@ struct Question3View_time_limit: View {
                     EmptyView()
                 }
                 .hidden()
+            )
+            .background(
+                NavigationLink(destination: DictionaryView(navigateToPlayMenu: $navigateToPlayMenu,username: username), isActive: $navigateToDictionary) {
+                        EmptyView()
+                    }
+                    .hidden()
             )
         }
         .alert(isPresented: $showAlert) {
@@ -633,6 +686,10 @@ struct Question3View_time_limit: View {
                         navigateToOverview = true
                         timerManager.stopTimer()
                     }
+                    else if alertMessage == "You will lose your progress if you go to Dictionary"{
+                        navigateToDictionary = true
+                    }
+                                
                 })
             )
         }
@@ -683,6 +740,11 @@ struct Question3View_time_limit: View {
             print("showAlert =", showAlert)
             timerManager.stopTimer()
             alertMessage = "You will lose your progress if you go to Overview"
+        case 2: // Dictionary
+            showAlert = true
+            print("showAlert =", showAlert)
+            timerManager.stopTimer()
+            alertMessage = "You will lose your progress if you go to Dictionary"
         default:
             break
         }
@@ -840,7 +902,7 @@ struct OverviewView: View {
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
             VStack {
-                Text(username)
+                Text(username + " Overview")
                     .font(.title)
                     .padding()
                 List {
@@ -879,8 +941,9 @@ struct OverviewView: View {
             }
             .padding()
             .padding()
-            .navigationBarItems(leading: backButton)
-            .navigationBarItems(leading: LargeTitleNavBarTitle(text: "Overview Page"))
+            .navigationBarItems(
+                    leading: backButton
+                )
             .navigationBarBackButtonHidden(true)
         }
     }
@@ -913,7 +976,19 @@ struct generateRandomNoView: View {
                 .edgesIgnoringSafeArea(.all)
             VStack {
                 NavigationLink(destination: ContentView_time_limit(generatedShuffleQuestionSet: generatedShuffleQuestionSet, currentMark: $currentMark, username: username, wrongQArray: $wrongQArray)) {
-                    Text("Start Game")
+                    HStack {
+                        Image(systemName: "play.fill")
+                            .font(Font.system(size: 20))
+                        Text("Start game")
+                            .font(.title)
+                    }
+                    .padding()
+                    .background(
+                        ZStack {
+                            Capsule()
+                                .stroke(Color.black, lineWidth: 2) // Adjust the line width as desired
+                        }
+                    )
                 }
             }
         }
@@ -989,6 +1064,5 @@ struct WelcomeView: View {
         }
     }
 }
-
 
 
