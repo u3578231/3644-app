@@ -7,8 +7,8 @@
 import SwiftUI
 
 struct User {
-    let username: String
-    let password: String
+    var username: String
+    var password: String
     var dateArray: [String]
     var playermodeArray: [String]
     var MarkArray: [Double]
@@ -42,6 +42,7 @@ struct RegisterView: View {
     @State private var registerPassword = ""
     @State private var navigateToLoginView = false
     @State private var navigateToWelcomeView = false
+    @State private var navigateToRegisterView = false
     @State private var showAlert = false
     @State private var alertMessage = ""
     @State private var isRegistering = false
@@ -113,6 +114,9 @@ struct RegisterView: View {
                     dismissButton: .default(Text("OK"))
                 )
             }
+        }
+        .onAppear {
+            navigateToRegisterView = true
         }
     }
     func showAlert(message: String) {
