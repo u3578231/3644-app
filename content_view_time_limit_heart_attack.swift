@@ -53,6 +53,7 @@ struct ContentView_time_limit_heart_attack: View {
     @ObservedObject var timer: TimerManager_heart_attack
     @Binding var isShowingResultView: Bool
     @Binding var currentMark: Double
+    @State private var navigateToDictionary = false
     @State var isShowingNextView = false
     @State private var showAlert = false
     @State private var alertMessage = ""
@@ -168,6 +169,13 @@ struct ContentView_time_limit_heart_attack: View {
                     }) {
                         Label("Overview", systemImage: "info.circle")
                     }
+                    Button(action: {
+                        showAlert = true
+                        timer.stopTimer()
+                        alertMessage = "Are you sure you want to go to Dictionary?"
+                    }) {
+                        Label("Dictionary", systemImage: "book.circle")
+                    }
                 } label: {
                     Image(systemName: "line.horizontal.3")
                         .imageScale(.large)
@@ -181,6 +189,12 @@ struct ContentView_time_limit_heart_attack: View {
             )
             .background(
                 NavigationLink(destination: PlayMenu(shuffle_question_set: 0, username: username), isActive: $navigateToPlayMenu) {
+                    EmptyView()
+                }
+                .hidden()
+            )
+            .background(
+                NavigationLink(destination: DictionaryView(navigateToPlayMenu: $navigateToPlayMenu,username: username), isActive: $navigateToDictionary) {
                     EmptyView()
                 }
                 .hidden()
@@ -201,6 +215,10 @@ struct ContentView_time_limit_heart_attack: View {
                         navigateToOverview = true
                         timer.stopTimer()
                     }
+                    else if alertMessage == "Are you sure you want to go to Dictionary?" {
+                       navigateToDictionary = true
+                       timer.stopTimer()
+                   }
                 })
             )
         }
@@ -223,6 +241,7 @@ struct Question2View_time_limit_heart_attack: View {
     @ObservedObject var timer: TimerManager_heart_attack
     @Binding var isShowingResultView: Bool
     @State var isShowingNextView = false
+    @State private var navigateToDictionary = false
     @State private var q2_mark : Double = 0
     @State private var showAlert = false
     @State private var alertMessage = ""
@@ -342,6 +361,13 @@ struct Question2View_time_limit_heart_attack: View {
                     }) {
                         Label("Overview", systemImage: "info.circle")
                     }
+                    Button(action: {
+                        showAlert = true
+                        timer.stopTimer()
+                        alertMessage = "Are you sure you want to go to Dictionary?"
+                    }) {
+                        Label("Dictionary", systemImage: "book.circle")
+                    }
                 } label: {
                     Image(systemName: "line.horizontal.3")
                         .imageScale(.large)
@@ -355,6 +381,12 @@ struct Question2View_time_limit_heart_attack: View {
             )
             .background(
                 NavigationLink(destination: PlayMenu(shuffle_question_set: 0, username: username), isActive: $navigateToPlayMenu) {
+                    EmptyView()
+                }
+                .hidden()
+            )
+            .background(
+                NavigationLink(destination: DictionaryView( navigateToPlayMenu:$navigateToPlayMenu,username: username), isActive: $navigateToDictionary) {
                     EmptyView()
                 }
                 .hidden()
@@ -373,6 +405,10 @@ struct Question2View_time_limit_heart_attack: View {
                         timer.stopTimer()
                     } else if alertMessage == "Are you sure you want to go to Overview?" {
                         navigateToOverview = true
+                        timer.stopTimer()
+                    }
+                    else if alertMessage == "Are you sure you want to go to Dictionary?" {
+                        navigateToDictionary = true
                         timer.stopTimer()
                     }
                 })
@@ -399,6 +435,7 @@ struct Question3View_time_limit_heart_attack: View {
     @ObservedObject var timer: TimerManager_heart_attack
     @Binding var isShowingResultView: Bool
     @State var isShowingNextView = false
+    @State private var navigateToDictionary = false
     @State private var showAlert = false
     @State private var alertMessage = ""
     @Binding private var currentMark : Double
@@ -510,6 +547,13 @@ struct Question3View_time_limit_heart_attack: View {
                     }) {
                         Label("Overview", systemImage: "info.circle")
                     }
+                    Button(action: {
+                        showAlert = true
+                        timer.stopTimer()
+                        alertMessage = "Are you sure you want to go to Dictionary?"
+                    }) {
+                        Label("Dictionary", systemImage: "book.circle")
+                    }
                 } label: {
                     Image(systemName: "line.horizontal.3")
                         .imageScale(.large)
@@ -523,6 +567,12 @@ struct Question3View_time_limit_heart_attack: View {
             )
             .background(
                 NavigationLink(destination: PlayMenu(shuffle_question_set: 0, username: username), isActive: $navigateToPlayMenu) {
+                    EmptyView()
+                }
+                .hidden()
+            )
+            .background(
+                NavigationLink(destination: DictionaryView(navigateToPlayMenu: $navigateToPlayMenu, username: username), isActive: $navigateToDictionary) {
                     EmptyView()
                 }
                 .hidden()
@@ -541,6 +591,10 @@ struct Question3View_time_limit_heart_attack: View {
                         timer.stopTimer()
                     } else if alertMessage == "Are you sure you want to go to Overview?" {
                         navigateToOverview = true
+                        timer.stopTimer()
+                    }
+                    else if alertMessage == "Are you sure you want to go to Dictionary?" {
+                        navigateToDictionary = true
                         timer.stopTimer()
                     }
                 })
