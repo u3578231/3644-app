@@ -96,7 +96,7 @@ struct ContentView_no_time_limit: View {
                         print("wrong_q_array =", wrongQArray)
                     }
                 }
-                .padding(.top, 50)
+                .padding(.top, 150)
                 .offset(y: -30)
                 
                 HStack {
@@ -668,7 +668,7 @@ struct generateRandomNoView_no_time_limit: View {
     }
     
     func generateRandomIndex() -> Int {
-        let shuffleQuestionSet = Int.random(in: 0..<21)
+        let shuffleQuestionSet = Int.random(in: 0..<34)
         let questionNo = randomarray[shuffleQuestionSet][0]
         print("shuffle_question_set: \(shuffleQuestionSet)")
         print("first question no: \(questionNo)")
