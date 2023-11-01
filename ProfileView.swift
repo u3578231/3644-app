@@ -26,16 +26,24 @@ struct ProfileView: View {
                 Spacer().frame(height: 350)
                 VStack {
                     if let userIndex = userArray.firstIndex(where: { $0.username == username }) {
+                        Text("Profile Picture")
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .foregroundColor(.primary)
+                            .multilineTextAlignment(.leading) // Align the text to the left
+                            .frame(maxWidth: .infinity, alignment: .leading) // Expand the frame to fill the available width
+                            .padding(.top, 100) // Move the text higher
+                            .padding(.leading, 20) // Move the text to the right
                         Image(uiImage: profileImage ?? UIImage(systemName: "person")!)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 150, height: 250)
-                                .clipShape(Rectangle())
-                                .overlay(Rectangle().stroke(Color.white, lineWidth: 4))
-                                .shadow(radius: 7)
-                                .onTapGesture {
-                                    showCamera = true
-                                }
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 150, height: 250)
+                            .cornerRadius(8) // Apply a corner radius to the frame
+                            .overlay(Rectangle().stroke(Color.white, lineWidth: 4))
+                            .shadow(color: Color.blue.opacity(0.5), radius: 7) // Apply a shadow with blue color and opacity
+                            .onTapGesture {
+                                showCamera = true
+                            }
                         
                         Spacer().frame(height: 80) // Add spacing between the profile picture and the form
                         
@@ -44,14 +52,14 @@ struct ProfileView: View {
                                 .font(.title)
                                 .fontWeight(.bold)
                                 .foregroundColor(.primary)
-                                .multilineTextAlignment(.center)
+                                .multilineTextAlignment(.leading) // Align the text to the left
                                 .padding(.vertical, 20) // Add padding to adjust the spacing between the image and the username
                             
                             TextField("New Password", text: $newPassword)
                                 .autocapitalization(.none) // Disable autocapitalization
+                            
                         }
                         .padding(.horizontal)
-                        
                         Section {
                             Button("Change Password") {
                                 changePassword(for: userIndex)
@@ -63,6 +71,7 @@ struct ProfileView: View {
                         Text("User not found")
                     }
                 }
+                .padding(.vertical, -210)
             }
             .sheet(isPresented: $showCamera) {
                 CameraView(profileImage: $profileImage)
