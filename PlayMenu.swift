@@ -10,7 +10,6 @@ import SwiftUI
 struct PlayMenu: View {
     let shuffle_question_set: Int
     let username: String
-    //@Environment(\.presentationMode) var presentationMode
     @State private var navigateToRegisterView = false
     @State private var navigateToPlayMenu = false
     @State private var navigateToOverview = false
@@ -25,20 +24,109 @@ struct PlayMenu: View {
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
+            
             VStack {
+                VStack{
+                    Text("Play Menu")
+                        .font(.title)
+                }
                 List {
                     Section(header: Text("Game Mode")) {
                         NavigationLink(destination: generateRandomNoView(shuffle_question_set: 0, username: username)) {
-                            Text("Time Limit")
+                            HStack {
+                                Image("time limit easy")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 150, height: 150) // Adjust the size as needed
+                                
+                                VStack(alignment: .leading) {
+                                    Text("Mode: Time Limit Easy")
+                                        .foregroundColor(.red)
+                                    
+                                    Spacer()
+                                    
+                                    HStack {
+                                        Text("Difficulty: ")
+                                            .foregroundColor(.red)
+                                        Image(systemName: "star.fill")
+                                            .foregroundColor(.yellow)
+                                        Image(systemName: "star.fill")
+                                            .foregroundColor(.yellow)
+                                    }
+                                }
+                                .padding()
+                            }
                         }
                         NavigationLink(destination: generateRandomNoView_no_time_limit(shuffle_question_set: 0, username: username)) {
-                            Text("No Time Limit")
+                            HStack {
+                                Image("no time limit")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 150, height: 150) // Adjust the size as needed
+                                
+                                VStack(alignment: .leading) {
+                                    Text("Mode: No Time Limit")
+                                        .foregroundColor(.red)
+                                    
+                                    Spacer()
+                                    
+                                    HStack {
+                                        Text("Difficulty: ")
+                                            .foregroundColor(.red)
+                                        Image(systemName: "star.fill")
+                                            .foregroundColor(.yellow)
+                                    }
+                                }
+                                .padding()
+                            }
                         }
                         NavigationLink(destination: generateRandomNoView_time_limit_heart_attack(username: username)) {
-                            Text("Time Limit_heart_attack")
+                            HStack {
+                                Image("time limit hard")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 150, height: 150) // Adjust the size as needed
+                                
+                                VStack(alignment: .leading) {
+                                    Text("Mode: Time Limit Hard")
+                                        .foregroundColor(.red)
+                                    
+                                    Spacer()
+                                    
+                                    HStack {
+                                        Text("Difficulty: ")
+                                            .foregroundColor(.red)
+                                        Image(systemName: "star.fill")
+                                            .foregroundColor(.yellow)
+                                        Image(systemName: "star.fill")
+                                            .foregroundColor(.yellow)
+                                        Image(systemName: "star.fill")
+                                            .foregroundColor(.yellow)
+                                    }
+                                }
+                                .padding()
+                            }
                         }
                         NavigationLink(destination: AR_View()) {
-                            Text("AR")
+                            HStack (spacing: 50){
+                                Image("AR")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 150, height: 150) // Adjust the size as needed
+                                
+                                VStack(alignment: .leading) {
+                                    Text("Mode: AR")
+                                        .foregroundColor(.red)
+                                    
+                                    Spacer()
+                                    
+                                    HStack {
+                                        Text("Difficulty: ")
+                                            .foregroundColor(.red)
+                                    }
+                                }
+                                .padding()
+                            }
                         }
                     }
                     
@@ -55,7 +143,10 @@ struct PlayMenu: View {
                     }
                 }
                 .scrollContentBackground(.hidden)
-                .navigationBarTitle("Play Menu", displayMode: .large)
+                .padding(.top, 200) // Adjust the top padding as needed
+                
+                Spacer() // Add a spacer to push the lists to the top
+                    .navigationTitle("Play Menu")
                 .navigationBarBackButtonHidden(true)
                 .navigationBarItems(
                     leading: backButton,
@@ -74,7 +165,9 @@ struct PlayMenu: View {
         Button(action: {
             navigateToRegisterView = true
         }) {
-            Label("Back", systemImage: "chevron.left")
+            Image(systemName: "chevron.left")
+                .font(.title)
+                .foregroundColor(.blue)
         }
         .padding()
         .opacity(showBackButton ? 1.0 : 0.0)
