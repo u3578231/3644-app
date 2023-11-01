@@ -8,18 +8,18 @@
 import SwiftUI
 import Combine
 class TimerManager_heart_attack: ObservableObject {
-    @Published var timeRemaining = 10
+    @Published var timeRemaining = 15
     private var timer: Timer?
     private var cancellables: Set<AnyCancellable> = []
 
-    init(timeRemaining: Int = 10) {
+    init(timeRemaining: Int = 15) {
         self.timeRemaining = timeRemaining
     }
 
     func startTimer() {
         timer?.invalidate()
         if timeRemaining == 0 && timer == nil {
-            timeRemaining = 10
+            timeRemaining = 15
         }
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             guard let self = self else { return }
@@ -669,7 +669,7 @@ struct generateRandomNoView_time_limit_heart_attack: View {
             isShowingNextView.toggle()
         }
     func generateRandomIndex() -> Int {
-        let generatedShuffleQuestionSet = Int.random(in: 0..<21)
+        let generatedShuffleQuestionSet = Int.random(in: 0..<34)
         let questionNo = randomarray[generatedShuffleQuestionSet][0]
         print("shuffle_question_set: \(generatedShuffleQuestionSet)")
         print("first question no: \(questionNo)")
