@@ -20,24 +20,55 @@ struct ChartView: View {
                 VStack {
                     Text(username + " mark history")
                         .font(.title)
+                    Text("For more details, look at the overview")
                     Spacer()
                     if let userIndex = userArray.firstIndex(where: { $0.username == username }) {
                         let dateArray = userArray[userIndex].dateArray.map { formatDate($0) }
                         let markArray = userArray[userIndex].MarkArray.map { String($0) }
                         let chartData = Array(zip(dateArray, markArray)).map { ChartData(date: $0.0, mark: Double($0.1) ?? 0) }
-                        
+                        let yValues = chartData.map { $0.mark }
+                        let mean = yValues.reduce(0, +) / Double(yValues.count)
+                        let squaredDeviations = yValues.map { pow($0 - mean, 2) }
+                        let sumOfSquaredDeviations = squaredDeviations.reduce(0, +)
+                        let standardDeviation = sqrt(sumOfSquaredDeviations / Double(yValues.count))
                         if dateArray.isEmpty {
                             Text("No graph available!")
                                 .foregroundColor(.red)
                                 .font(.title2)
                                 .padding()
                         } else {
+                            VStack(alignment: .leading){
+                                Text("Number of times game modes played: \(userArray[userIndex].dateArray.count)")
+                                    .font(.title)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.primary)
+                                    .multilineTextAlignment(.leading)
+                                    .frame(maxWidth: .infinity, alignment: .leading) // Expand the frame to fill the available width
+                                    .padding(.vertical, 20)
+                                    .padding(.leading, 16)
+                                Text("Mean: \(mean)")
+                                    .font(.title)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.primary)
+                                    .multilineTextAlignment(.leading)
+                                    .frame(maxWidth: .infinity, alignment: .leading) // Expand the frame to fill the available width
+                                    .padding(.vertical, 20)
+                                    .padding(.leading, 16)
+                                Text("Standard deviation: \(standardDeviation)")
+                                    .font(.title)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.primary)
+                                    .multilineTextAlignment(.leading)
+                                    .frame(maxWidth: .infinity, alignment: .leading) // Expand the frame to fill the available width
+                                    .padding(.vertical, 20)
+                                    .padding(.leading, 16)
+                            }
+                            .padding(.top, -250)
                             ScrollView(.horizontal){
                                 VStack {
                                     Text("Mark History")
                                         .font(.title2)
                                         .bold()
-                                        .padding()
                                     Chart(chartData) { tuple in
                                         LineMark(
                                             x: .value("X values", tuple.date),
@@ -64,6 +95,7 @@ struct ChartView: View {
                                     .frame(width: CGFloat(5 * dateArray.count - 4) * 28, height: 300)
                                 }
                             }
+                            .padding(.bottom, 200)
                         }
                     } else {
                         Text("No graph available!")
@@ -71,10 +103,9 @@ struct ChartView: View {
                             .font(.title2)
                             .padding()
                     }
-                    
                     Spacer()
-                    Text("For more details, look at the overview")
-                        .padding(.bottom, 50)
+                    Spacer()
+                    
                 }
             }
         }
