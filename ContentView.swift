@@ -8,14 +8,14 @@
 
 import SwiftUI
 let question_no = [1, 2, 3]
-let randomarray = [[2,3,5], [0, 1, 3], [5,2,1], [1, 3, 2], [2,3,4], [5,3,4], [0, 2, 1], [4,3,5], [3, 2, 0], [4,1,5], [2, 0, 1], [3,4,1], [1,4,5], [2, 1, 3], [1,2,3], [3,5,4],  [3,2,1], [5,3,1],[4,1,2], [3,1,4], [2,5,1]]
-let questions = ["Which of the following is a subfield of AI that focuses on enabling computers to understand and process human language?", "What is the process of teaching a machine learning model with labeled data called?", "Which technique is commonly used for training deep learning models?", "What is the primary goal of artificial intelligence (AI)?", "Which algorithm is commonly used for clustering data points in unsupervised machine learning?", "What is the concept of teaching an AI model to perform a task by providing feedback on its performance called?"]
-let optionA = ["A: Computer vision", "A: Unsupervised learning", "A: Reinforcement learning", "A: Automating repetitive tasks", "A: K-means", "A: Active learning"]
-let optionB = ["B: Natural language processing (NLP)", "B: Reinforcement learning", "B: Naive Bayes", "B: Simulating human intelligence", "B: Random Forest", "B: Semi-supervised learning"]
-let optionC = ["C: Robotics", "C: Supervised learning", "C: Convolutional neural networks", "C: Enhancing decision-making", "C: Support Vector Machines (SVM)", "C: Transfer learning"]
-let optionD = ["D: Genetic algorithms", "D: Transfer learning", "D: Decision trees", "D: Improving data security", "D: Gradient Boosting", "D: Reinforcement learning"]
-let correctans = ["B: Natural language processing (NLP)", "C: Supervised learning", "C: Convolutional neural networks", "B: Simulating human intelligence", "B: It is difficult", "D: Reinforcement learning"]
-let tips = ["Both robotics and genetic algorithms are not subfields of AI", "Unsupervised learning means providing no guidance to system to analyze the data", "Neural networks contain convolutional and pooling layers for extracting features", "AI aims to possess human brain thinking ability", "b) Random Forest, Support Vector Machines (SVM), Gradient Boosting are related to classification", "Reinforcement learning learns by having agents as environment sensingand feedbacks as return"]
+let randomarray = [[5,7,9],[2,3,5], [6,9,10],[0, 1, 3], [5,2,1], [10,3,4], [1, 3, 2], [2,3,4], [7,3,8],[5,3,4], [0, 2, 1], [4,3,5], [3, 2, 0], [9,1,0],[4,1,5], [10,6,4],[2, 0, 1], [7,8,1],[3,4,1],[8,9,10], [1,4,5], [6,7,8],[2, 1, 3], [10,2,6],[1,2,3], [3,5,4], [7,2,0], [3,2,1], [8,4,9],[5,3,1],[4,1,2], [3,1,4], [9,10,2],[2,5,1], [5,9,2],[3,6,9]]
+let questions = ["Which of the following is a subfield of AI that focuses on enabling computers to understand and process human language?", "What is the process of teaching a machine learning model with labeled data called?", "Which technique is commonly used for training deep learning models?", "What is the primary goal of artificial intelligence (AI)?", "Which algorithm is commonly used for clustering data points in unsupervised machine learning?", "What is the concept of teaching an AI model to perform a task by providing feedback on its performance called?", "Which is a kind of uninformed search in artificial intelligence?", "What is the difference between temporal difference learning and Q-learning?", "Which is correct about a state space graph and search tree?", "What is time complexity of Depth-First-Search? where E = no. of edges, N = no. of nodes", "Which of the following is not an optimization technique to avoid overfitting?"]
+let optionA = ["A: Computer vision", "A: Unsupervised learning", "A: Reinforcement learning", "A: Automating repetitive tasks", "A: K-means", "A: Active learning", "A: Breadth-First-Search", "A: TDL is model-free while Q-learning is model-based", "A: State space graph and search tree are both complete", "A: O(N^2)", "A: ReLU"]
+let optionB = ["B: Natural language processing (NLP)", "B: Reinforcement learning", "B: Naive Bayes", "B: Simulating human intelligence", "B: Random Forest", "B: Semi-supervised learning", "B: Local search", "B: TDL is belongs to reinforcement learning while Q-learning belongs to unsupervised learning", "B: State space graph shows all possible transitions while search tree shows the possible routes to reach a goal", "B: O(E^2)", "B: Adagrad"]
+let optionC = ["C: Robotics", "C: Supervised learning", "C: Convolutional neural networks", "C: Enhancing decision-making", "C: Support Vector Machines (SVM)", "C: Transfer learning", "C: A-star search", "C: TDL uses actual observed reward plus future estimated action value of next state while Q-learning keep tracks of maximum maximum estimated action value of next state", "C: Both help find the way to a goal state", "C: O(NE)", "C: Adam"]
+let optionD = ["D: Genetic algorithms", "D: Transfer learning", "D: Decision trees", "D: Improving data security", "D: Gradient Boosting", "D: Reinforcement learning", "D: Greedy search", "D: TDL converges to a solution while Q-learning does not", "D: Search tree uses an array to store the possible solutions", "D: O(N+E)", "D: Rprop"]
+let correctans = ["B: Natural language processing (NLP)", "C: Supervised learning", "C: Convolutional neural networks", "B: Simulating human intelligence", "A: K-means", "D: Reinforcement learning","A: Breadth-First-Search", "C: TDL uses actual observed reward plus future estimated action value of next state while Q-learning keep tracks of maximum maximum estimated action value of next state","B: State space graph shows all possible transitions while search tree shows the possible routes to reach a goal", "D: O(N+E)", "A: ReLU"]
+let tips = ["Both robotics and genetic algorithms are not subfields of AI", "Unsupervised learning means providing no guidance to system to analyze the data", "Neural networks contain convolutional and pooling layers for extracting features", "AI aims to possess human brain thinking ability", "Random Forest, Support Vector Machines (SVM), Gradient Boosting are related to classification", "Reinforcement learning learns by having agents as environment sensingand feedbacks as return", "Depth-First-Search and Breadth-First-Search are both uninformed searches", "Q-learning has a maximizing component but TDL does not", "State space graph analyzes the possible states in a problem domain while search tree searches the solution from initial state to goal state", "DFS will visit all the edges and nodes once in the worst case", "ReLU is an activation function to control neural network output"]
 let dictionary_word = ["Supervised learning", "Unsupervised learning", "Reinforcement learning", "Artificial intelligence", "Convolutional layers"]
 let dictionary_purpose = ["model learns from labeled training data to make predictions or classify new, unseen data", "explore and extract insights from the data, uncover hidden patterns", "maximize a cumulative reward signal over a sequence of actions taken by the agent in a dynamic environment", "create intelligent systems that can perceive, reason, learn, and make decisions or predictions", "extract spatial hierarchies of features from input data"]
 let dictionary_how_does_it_work = ["1. the training data is collected or generated\n 2. the data is split into two sets: the training set used to train the model and the test set\n 3. fine-tuning hyperparameters", "1. analyzing the input data and finding inherent patterns or similarities OR reduce the number of input features while preserving important information \n2. iteratively updating model parameters or optimizing certain criteria to minimize the differences or maximize the similarities between data points", "1. interacts with the environment by taking actions and receiving feedback in the form of rewards or penalties based on its actions.\n2. learns by updating its policy based on the rewards received and the observed consequences of its actions", "1. training AI model to extract patterns\n2. fine-tuning models\n3. develop human-like functionalies", "1. application of convolutional filters or kernels to the input data\n2. shift filters across the input to capture patterns\n3. feature map generated, which is the response of a particular filter"]
@@ -142,7 +142,7 @@ struct ContentView_time_limit: View {
                             checkAnswerAndIncrementMark()
                         }
                     }
-                    .padding(.top, 50)
+                    .padding(.top, 350)
                     .offset(y: -30)
                     .disabled(showCorrectMessage || showWrongMessage)
                     NavigationLink(destination: Question2View_time_limit(generatedShuffleQuestionSet: generatedShuffleQuestionSet, currentMark: $currentMark, username: username, wrongQArray: $wrongQArray, q1_mark: q1_mark).environmentObject(timerManager)) {
@@ -162,7 +162,7 @@ struct ContentView_time_limit: View {
                     }
                     Text("Time Remaining: \(timerManager.timeRemaining)")
                         .font(.largeTitle)
-                        .padding()
+                        .padding(100)
                     
                     Spacer()
                 }
@@ -234,8 +234,12 @@ struct ContentView_time_limit: View {
                 Group {
                     if showCorrectMessage {
                         Text("You are correct")
+                            .padding(.top, -400)
+                            .foregroundColor(.green)
                     } else if showWrongMessage {
                         Text("You are wrong")
+                            .padding(.top, -400)
+                            .foregroundColor(.red)
                     } else {
                         EmptyView()
                     }
@@ -355,7 +359,7 @@ struct Question2View_time_limit: View {
                             checkAnswerAndIncrementMark()
                         }
                     }
-                    .padding(.top, 50)
+                    .padding(.top, 350)
                     .offset(y: -30)
                     .disabled(showCorrectMessage || showWrongMessage)
                     NavigationLink(destination: Question3View_time_limit(generatedShuffleQuestionSet: generatedShuffleQuestionSet, currentMark: $currentMark, username: username, wrongQArray: $wrongQArray, q1_mark: q1_mark,q2_mark: q2_mark).environmentObject(timerManager)) {
@@ -447,8 +451,10 @@ struct Question2View_time_limit: View {
                 Group {
                     if showCorrectMessage {
                         Text("You are correct")
+                            .padding(.top, -400)
                     } else if showWrongMessage {
                         Text("You are wrong")
+                            .padding(.top, -400)
                     } else {
                         EmptyView()
                     }
@@ -593,7 +599,7 @@ struct Question3View_time_limit: View {
                             checkAnswerAndIncrementMark()
                         }
                     }
-                .padding(.top, 50)
+                .padding(.top, 350)
                 .offset(y: -30)
                 .disabled(showCorrectMessage || showWrongMessage)
                 Button(action: {
@@ -616,7 +622,7 @@ struct Question3View_time_limit: View {
                 }
                 Text("Time Remaining: \(timerManager.timeRemaining)")
                     .font(.largeTitle)
-                    .padding()
+                    .padding(100)
                 
                 Spacer()
             }
@@ -697,8 +703,10 @@ struct Question3View_time_limit: View {
             Group {
                 if showCorrectMessage {
                     Text("You are correct")
+                        .padding(.top, -400)
                 } else if showWrongMessage {
                     Text("You are wrong")
+                        .padding(.top, -400)
                 } else {
                     EmptyView()
                 }
@@ -777,6 +785,10 @@ struct QuestionView: View {
                             selectedAnswer = ansA
                             answerSelected?(ansA)
                         }
+                }
+                .frame(width: 300, height: 150) // Specify the frame size for OptionA
+                
+                VStack {
                     OptionB(ansB: ansB)
                         .background(selectedAnswer == ansB ? Color.green : Color.white)
                         .onTapGesture {
@@ -784,7 +796,11 @@ struct QuestionView: View {
                             answerSelected?(ansB)
                         }
                 }
-                
+                .frame(width: 300, height: 150) // Specify the frame size for OptionB
+            }
+            .padding(.vertical, 10)
+            
+            HStack {
                 VStack {
                     OptionC(ansC: ansC)
                         .background(selectedAnswer == ansC ? Color.green : Color.white)
@@ -792,6 +808,10 @@ struct QuestionView: View {
                             selectedAnswer = ansC
                             answerSelected?(ansC)
                         }
+                }
+                .frame(width: 300, height: 150) // Specify the frame size for OptionC
+                
+                VStack {
                     OptionD(ansD: ansD)
                         .background(selectedAnswer == ansD ? Color.green : Color.white)
                         .onTapGesture {
@@ -799,7 +819,9 @@ struct QuestionView: View {
                             answerSelected?(ansD)
                         }
                 }
+                .frame(width: 300, height: 150) // Specify the frame size for OptionD
             }
+            .padding(.vertical, 10)
         }
     }
 }
@@ -852,10 +874,20 @@ struct ResultView: View {
         return (currentMark * 10).rounded() / 10
     }
     
+    private var emoji: String {
+        if currentMark == 3 {
+            return "👍👍"
+        } else if currentMark >= 2 && currentMark < 3 {
+            return "👍"
+        } else {
+            return "😢"
+        }
+    }
+    
     var body: some View {
         NavigationView {
-            ZStack{
-                Image("background") // Set the desired image as the background
+            ZStack {
+                Image("background")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .edgesIgnoringSafeArea(.all)
@@ -863,19 +895,23 @@ struct ResultView: View {
                     Text("Result is \(formattedMark)")
                         .font(.largeTitle)
                         .padding()
-                    
+                    Text("\(emoji)")
+                        .font(.largeTitle)
+                        .padding()
                     NavigationLink(destination: PlayMenu(shuffle_question_set: 0, username: username), isActive: $navigateToPlayMenu) {
                         EmptyView()
                     }
                     
                     Button("Menu") {
-                        print("Navigating to TestView")
+                        print("Navigating to PlayMenu")
                         navigateToPlayMenu = true
                     }
                 }
             }
         }
         .navigationBarBackButtonHidden()
+        .navigationViewStyle(StackNavigationViewStyle())
+        .animation(.default)
     }
 }
 
@@ -901,10 +937,12 @@ struct OverviewView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
+            
             VStack {
-                Text(username + " Overview")
+                Text("Name: \(username)")
                     .font(.title)
-                    .padding()
+                    .padding(.top, 210)
+                
                 List {
                     HStack {
                         Text("Date")
@@ -917,36 +955,61 @@ struct OverviewView: View {
                             .fontWeight(.bold)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
+                    
                     if let userIndex = userArray.firstIndex(where: { $0.username == username }) {
                         ForEach(0..<userArray[userIndex].dateArray.count, id: \.self) { index in
-                            NavigationLink(destination: ReflectionView(username: username,userIndex: userIndex, index: index)) {
+                            NavigationLink(destination: ReflectionView(username: username, userIndex: userIndex, index: index)) {
                                 HStack {
                                     Text(userArray[userIndex].dateArray[index])
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                     Text(userArray[userIndex].playermodeArray[index])
                                         .frame(maxWidth: .infinity, alignment: .leading)
-                                    Text("\(userArray[userIndex].MarkArray[index])")
+                                    Text("\(String(format: "%.1f", userArray[userIndex].MarkArray[index]))")
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                 }
                             }
                         }
                     }
                 }
-                .padding()
+                .padding(.top, 150)
                 .scrollContentBackground(.hidden)
             }
             
-            NavigationLink(destination: PlayMenu(shuffle_question_set: 0, username: username), isActive: $navigateToPlayMenu) {
-                EmptyView()
+            VStack {
+                if let userIndex = userArray.firstIndex(where: { $0.username == username }) {
+                    let markArray = userArray[userIndex].MarkArray
+                    let averageMark = markArray.reduce(0, +) / Double(markArray.count)
+                    
+                    if averageMark <= 1.5 {
+                        Text("You need improvement")
+                            .modifier(BlueShadowTextModifier())
+                    } else if averageMark > 1.5 && averageMark < 2.5 {
+                        Text("You got a good grasp of AI")
+                            .modifier(BlueShadowTextModifier())
+                    } else if averageMark >= 2.5 && averageMark < 3 {
+                        Text("You are superb!")
+                            .modifier(BlueShadowTextModifier())
+                    }
+                }
             }
+            .font(.headline)
             .padding()
+            .background(Color.white.opacity(0.8))
+            .cornerRadius(10)
             .padding()
-            .navigationBarItems(
-                    leading: backButton
-                )
-            .navigationBarBackButtonHidden(true)
+            .offset(y: -350) // Adjust the offset value as needed
         }
+        
+        NavigationLink(destination: PlayMenu(shuffle_question_set: 0, username: username), isActive: $navigateToPlayMenu) {
+            EmptyView()
+        }
+        .padding()
+        .padding()
+        .navigationBarItems(leading: backButton)
+        .navigationBarBackButtonHidden(true)
+        .navigationTitle("Overview")
     }
+
     private var backButton: some View {
         Button(action: {
             navigateToPlayMenu = true // Set navigateToPlayMenu to true
@@ -958,7 +1021,19 @@ struct OverviewView: View {
     }
 }
 
-
+struct BlueShadowTextModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.headline)
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color.white)
+                    .shadow(color: .blue, radius: 4, x: 0, y: 2)
+            )
+            .foregroundColor(.blue)
+    }
+}
 
 
 struct generateRandomNoView: View {
@@ -995,7 +1070,7 @@ struct generateRandomNoView: View {
     }
     
     func generateRandomIndex() -> Int {
-        let shuffleQuestionSet = Int.random(in: 0..<21)
+        let shuffleQuestionSet = Int.random(in: 0..<34)
         let questionNo = randomarray[shuffleQuestionSet][0]
         return shuffleQuestionSet // Return the generated value
     }
@@ -1062,6 +1137,7 @@ struct WelcomeView: View {
                 }
             )
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
