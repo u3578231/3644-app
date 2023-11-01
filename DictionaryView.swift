@@ -48,19 +48,20 @@ struct DictionaryView: View {
                             }
                         }
                         .font(.headline)
-                        .padding(.vertical, 100)
+                        .padding(.bottom, 350)
                         .frame(width:270, height: 140)
                     }
                     .scrollContentBackground(.hidden)
+                    .padding(.top, 290)
                 }
                 NavigationLink(destination: PlayMenu(shuffle_question_set: 0, username: username), isActive: $navigateToPlayMenu) {
                     EmptyView()
                 }
                 .navigationBarBackButtonHidden(true)
                 .navigationBarTitleDisplayMode(.inline)
-                .navigationBarItems(leading: backButton,
-                    trailing: LargeTitleNavBarTitle(text: "Dictionary")
+                .navigationBarItems(leading: backButton
                 )
+                .navigationTitle("Dictionary")
             }
     }
     private var backButton: some View {
@@ -120,6 +121,7 @@ struct DictionaryWordView: View {
                         }
                     }
                         .scrollContentBackground(.hidden)
+                    
                 )
             }
         }
