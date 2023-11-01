@@ -4,20 +4,32 @@
 //
 //  Created by Ryan Hui on 14/9/2023.
 //
-
+//
 import SwiftUI
 import RealityKit
 import ARKit
 struct AR_View: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var modelConfirmedForPlacement: String? = nil
-    
+    @State private var eraseModels = false
     var body: some View {
         ZStack(alignment: .bottom) {
-            ARViewContainer(modelConfirmedForPlacement: $modelConfirmedForPlacement)
-                .scaleEffect(modelConfirmedForPlacement == "fruitcake with fork and knife" ? 4.0: 1.0)
+            ARViewContainer(modelConfirmedForPlacement: $modelConfirmedForPlacement,eraseModels: $eraseModels)
                 .edgesIgnoringSafeArea(.all)
-            
+            VStack {
+            Button(action: {
+                self.eraseModels = true
+                }) {
+                Text("Clear")
+                    .foregroundColor(.red)
+                    .cornerRadius(10)
+                    .padding(.top, 50)
+                    .font(.system(size: 22))
+                }
+                .frame(minWidth: 100, maxWidth: .infinity)
+                Spacer()
+                Spacer()
+            }
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 10) {
                     Button(action: {
@@ -67,29 +79,13 @@ struct AR_View: View {
                 .background(Color.white.opacity(0.8))
                 .cornerRadius(20)
                 .padding()
-            }
-            
-            VStack {
-                HStack {
-                    Button(action: {
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        Image(systemName: "chevron.left")
-                            .foregroundColor(.white)
-                            .imageScale(.large)
-                            .padding()
-                    }
-                    Spacer()
-                }
-                Spacer()
-            }
-        }
+            }        }
     }
 }
 
 struct ARViewContainer: UIViewRepresentable {
     @Binding var modelConfirmedForPlacement: String?
-    
+    @Binding var eraseModels: Bool
     func makeUIView(context: Context) -> ARView {
         let arView = ARView(frame: .zero)
         let config = ARWorldTrackingConfiguration()
@@ -104,7 +100,6 @@ struct ARViewContainer: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: ARView, context: Context) {
-        // Perform any necessary updates to the ARView here
         if let modelName = self.modelConfirmedForPlacement {
             print("DEBUG: adding model to scene - \(modelName)")
             let filename = modelName + ".usdz"
@@ -116,6 +111,12 @@ struct ARViewContainer: UIViewRepresentable {
                 self.modelConfirmedForPlacement = nil
             }
         }
+        if self.eraseModels {
+           uiView.scene.anchors.removeAll()
+           DispatchQueue.main.async {
+               self.eraseModels = false
+           }
+       }
     }
 }
 #if DEBUG
