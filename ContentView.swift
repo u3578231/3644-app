@@ -20,6 +20,7 @@ let dictionary_word = ["Supervised learning", "Unsupervised learning", "Reinforc
 let dictionary_purpose = ["model learns from labeled training data to make predictions or classify new, unseen data", "explore and extract insights from the data, uncover hidden patterns", "maximize a cumulative reward signal over a sequence of actions taken by the agent in a dynamic environment", "create intelligent systems that can perceive, reason, learn, and make decisions or predictions", "extract spatial hierarchies of features from input data"]
 let dictionary_how_does_it_work = ["1. the training data is collected or generated\n 2. the data is split into two sets: the training set used to train the model and the test set\n 3. fine-tuning hyperparameters", "1. analyzing the input data and finding inherent patterns or similarities OR reduce the number of input features while preserving important information \n2. iteratively updating model parameters or optimizing certain criteria to minimize the differences or maximize the similarities between data points", "1. interacts with the environment by taking actions and receiving feedback in the form of rewards or penalties based on its actions.\n2. learns by updating its policy based on the rewards received and the observed consequences of its actions", "1. training AI model to extract patterns\n2. fine-tuning models\n3. develop human-like functionalies", "1. application of convolutional filters or kernels to the input data\n2. shift filters across the input to capture patterns\n3. feature map generated, which is the response of a particular filter"]
 let dictionary_example = ["1. classifying spam and non-spam emails\n 2.sentiment analysis", "1. Anomaly detection\n 2. group customers based on their purchasing behavior", "1. autonomous driving agent.\n2. chess games", "1. Face detection\n2. voice assistants\n3. recommendation systems", "1. Detection of edges in image\n2. identify certain sequence pattern in genome"]
+var dictionaryArray: [[String: String]] = []
 struct BackgroundImageView: View {
     var imageName: String
     var rotationAngle: Double
@@ -571,7 +572,7 @@ struct Question3View_time_limit: View {
         print("Current Date: \(formattedDate)")
         if let userIndex = userArray.firstIndex(where: { $0.username == username }) {
                 userArray[userIndex].dateArray.append(formattedDate)
-                userArray[userIndex].playermodeArray.append("no time limit")
+                userArray[userIndex].playermodeArray.append("time limit easy")
                 userArray[userIndex].MarkArray.append($currentMark.wrappedValue)
                 userArray[userIndex].wrong_q_2D_array.append(wrongQArray)
                 print("Date array = ", userArray[userIndex].dateArray)
@@ -786,7 +787,7 @@ struct QuestionView: View {
                             answerSelected?(ansA)
                         }
                 }
-                .frame(width: 300, height: 150) // Specify the frame size for OptionA
+                .frame(width: 330, height: 150) // Specify the frame size for OptionA
                 
                 VStack {
                     OptionB(ansB: ansB)
@@ -796,7 +797,7 @@ struct QuestionView: View {
                             answerSelected?(ansB)
                         }
                 }
-                .frame(width: 300, height: 150) // Specify the frame size for OptionB
+                .frame(width: 330, height: 150) // Specify the frame size for OptionB
             }
             .padding(.vertical, 10)
             
@@ -809,7 +810,7 @@ struct QuestionView: View {
                             answerSelected?(ansC)
                         }
                 }
-                .frame(width: 300, height: 150) // Specify the frame size for OptionC
+                .frame(width: 330, height: 150) // Specify the frame size for OptionC
                 
                 VStack {
                     OptionD(ansD: ansD)
@@ -819,7 +820,7 @@ struct QuestionView: View {
                             answerSelected?(ansD)
                         }
                 }
-                .frame(width: 300, height: 150) // Specify the frame size for OptionD
+                .frame(width: 330, height: 150) // Specify the frame size for OptionD
             }
             .padding(.vertical, 10)
         }
@@ -957,6 +958,7 @@ struct OverviewView: View {
                     }
                     
                     if let userIndex = userArray.firstIndex(where: { $0.username == username }) {
+                        
                         ForEach(0..<userArray[userIndex].dateArray.count, id: \.self) { index in
                             NavigationLink(destination: ReflectionView(username: username, userIndex: userIndex, index: index)) {
                                 HStack {
@@ -967,7 +969,7 @@ struct OverviewView: View {
                                     Text("\(String(format: "%.1f", userArray[userIndex].MarkArray[index]))")
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                 }
-                            }
+                            }                    
                         }
                     }
                 }
@@ -977,24 +979,26 @@ struct OverviewView: View {
             
             VStack {
                 if let userIndex = userArray.firstIndex(where: { $0.username == username }) {
-                    let markArray = userArray[userIndex].MarkArray
-                    let averageMark = markArray.reduce(0, +) / Double(markArray.count)
-                    
-                    if averageMark <= 1.5 {
-                        Text("You need improvement")
-                            .modifier(BlueShadowTextModifier())
-                    } else if averageMark > 1.5 && averageMark < 2.5 {
-                        Text("You got a good grasp of AI")
-                            .modifier(BlueShadowTextModifier())
-                    } else if averageMark >= 2.5 && averageMark < 3 {
-                        Text("You are superb!")
-                            .modifier(BlueShadowTextModifier())
+                    let markArray = userArray[userIndex].MarkArray.map { String($0) }
+                    let marks = markArray.compactMap { Double($0) } // Convert markArray to an array of Double values
+                    let averageMark = marks.reduce(0, +) / Double(marks.count) // Calculate the mean
+                    if (!markArray.isEmpty){
+                        if averageMark <= 1.5 {
+                            Text("You need improvement")
+                                .modifier(BlueShadowTextModifier())
+                        } else if averageMark > 1.5 && averageMark < 2.5 {
+                            Text("You got a good grasp of AI")
+                                .modifier(BlueShadowTextModifier())
+                        } else if averageMark >= 2.5 && averageMark < 3 {
+                            Text("You are superb!")
+                                .modifier(BlueShadowTextModifier())
+                        }
                     }
                 }
             }
             .font(.headline)
             .padding()
-            .background(Color.white.opacity(0.8))
+            //.background(Color.white.opacity(0.8))
             .cornerRadius(10)
             .padding()
             .offset(y: -350) // Adjust the offset value as needed
@@ -1049,7 +1053,16 @@ struct generateRandomNoView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
-            VStack {
+            VStack(spacing: 40) {
+                Text("This gameplay has 3 questions in total, each question carries 1 mark, and you have 10 seconds to answer each question")
+                    .font(.system(size:20))
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+                    .padding()
+                    .background(Color.black.opacity(0.5))
+                    .cornerRadius(20)
+                    .padding(.horizontal)
+                    .frame(width: 600, height: 150)
                 NavigationLink(destination: ContentView_time_limit(generatedShuffleQuestionSet: generatedShuffleQuestionSet, currentMark: $currentMark, username: username, wrongQArray: $wrongQArray)) {
                     HStack {
                         Image(systemName: "play.fill")
@@ -1066,6 +1079,7 @@ struct generateRandomNoView: View {
                     )
                 }
             }
+            .navigationTitle("Time Limit Easy")
         }
     }
     
