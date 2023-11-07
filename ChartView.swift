@@ -37,65 +37,78 @@ struct ChartView: View {
                                 .font(.title2)
                                 .padding()
                         } else {
-                            VStack(alignment: .leading){
-                                Text("Number of times game modes played: \(userArray[userIndex].dateArray.count)")
-                                    .font(.title)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.primary)
-                                    .multilineTextAlignment(.leading)
-                                    .frame(maxWidth: .infinity, alignment: .leading) // Expand the frame to fill the available width
-                                    .padding(.vertical, 20)
-                                    .padding(.leading, 16)
-                                Text("Mean: \(mean)")
-                                    .font(.title)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.primary)
-                                    .multilineTextAlignment(.leading)
-                                    .frame(maxWidth: .infinity, alignment: .leading) // Expand the frame to fill the available width
-                                    .padding(.vertical, 20)
-                                    .padding(.leading, 16)
-                                Text("Standard deviation: \(standardDeviation)")
-                                    .font(.title)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.primary)
-                                    .multilineTextAlignment(.leading)
-                                    .frame(maxWidth: .infinity, alignment: .leading) // Expand the frame to fill the available width
-                                    .padding(.vertical, 20)
-                                    .padding(.leading, 16)
-                            }
-                            .padding(.top, -250)
-                            ScrollView(.horizontal){
-                                VStack {
-                                    Text("Mark History")
-                                        .font(.title2)
-                                        .bold()
-                                    Chart(chartData) { tuple in
-                                        LineMark(
-                                            x: .value("X values", tuple.date),
-                                            y: .value("Y values", tuple.mark)
-                                        )
-                                        .foregroundStyle(Color.blue.gradient)
+                            VStack (spacing: 170){
+                                VStack(spacing: 10){
+                                    HStack() {
+                                        Text("Number of times game modes played")
+                                            .font(.headline)
+                                            .padding(.leading, 150)
+                                        Spacer()
+                                        Text("\(markArray.count)")
+                                            .font(.subheadline)
+                                            .foregroundColor(.secondary)
+                                            .padding(.trailing, 120)
                                     }
-                                    .chartYAxis{
-                                        AxisMarks(position: .trailing, values: [0, 1, 2, 3, 4]) { _ in
-                                            AxisGridLine()
-                                            AxisValueLabel()
-                                                .foregroundStyle(.red)
-                                                .font(.system(size: 20))
+                                    HStack {
+                                        Text("Mean")
+                                            .font(.headline)
+                                            .padding(.leading, 150)
+                                        Spacer()
+                                        Text("\(mean)")
+                                            .font(.subheadline)
+                                            .foregroundColor(.secondary)
+                                            .padding(.trailing, 120)
+                                    }
+                                    HStack {
+                                        Text("Standard Deviation")
+                                            .font(.headline)
+                                            .padding(.leading, 150)
+                                        Spacer()
+                                        Text("\(standardDeviation)")
+                                            .font(.subheadline)
+                                            .foregroundColor(.secondary)
+                                            .padding(.trailing, 120)
+                                    }
+                                }
+                                .background(
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .foregroundColor(.yellow)
+                                        .frame(width: 540, height: 110)
+                                        .padding(.leading, 27)
+                                )
+                                ScrollView(.horizontal){
+                                    VStack {
+                                        Text("Mark History")
+                                            .font(.title2)
+                                            .bold()
+                                        Chart(chartData) { tuple in
+                                            LineMark(
+                                                x: .value("X values", tuple.date),
+                                                y: .value("Y values", tuple.mark)
+                                            )
+                                            .foregroundStyle(Color.blue.gradient)
                                         }
-                                    }
-                                    .chartXAxis{
-                                        AxisMarks(){ _ in
-                                            AxisGridLine()
-                                            AxisValueLabel()
-                                                .foregroundStyle(.red)
-                                                .font(.system(size: 12))
+                                        .chartYAxis{
+                                            AxisMarks(position: .trailing, values: [0, 1, 2, 3, 4]) { _ in
+                                                AxisGridLine()
+                                                AxisValueLabel()
+                                                    .foregroundStyle(.red)
+                                                    .font(.system(size: 20))
+                                            }
                                         }
+                                        .chartXAxis{
+                                            AxisMarks(){ _ in
+                                                AxisGridLine()
+                                                AxisValueLabel()
+                                                    .foregroundStyle(.red)
+                                                    .font(.system(size: 12))
+                                            }
+                                        }
+                                        .frame(width: CGFloat(5 * dateArray.count - 4) * 28, height: 300)
                                     }
-                                    .frame(width: CGFloat(5 * dateArray.count - 4) * 28, height: 300)
                                 }
                             }
-                            .padding(.bottom, 200)
+                            .padding(.top, -270)
                         }
                     } else {
                         Text("No graph available!")
@@ -107,6 +120,7 @@ struct ChartView: View {
                     Spacer()
                     
                 }
+                .navigationViewStyle(StackNavigationViewStyle())
             }
         }
     }
