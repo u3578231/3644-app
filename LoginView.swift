@@ -47,17 +47,21 @@ struct RegisterView: View {
     @State private var alertMessage = ""
     @State private var isRegistering = false
     func registerUser(username: String, password: String) {
+        if username.isEmpty || password.isEmpty {
+            showAlert(message: "Username and password fields cannot be empty.")
+        } else {
             let isUsernameAlreadyRegistered = checkIfUsernameExists(username: username)
             if isUsernameAlreadyRegistered {
-                showAlert(message: "Do not register with the same username")
+                showAlert(message: "Do not register with the same username.")
             } else {
                 let newUser = User(username: username, password: password, dateArray: [], playermodeArray: [], MarkArray: [], wrong_q_2D_array: [])
                 userArray.append(newUser)
                 print("User registered successfully!")
                 navigateToLoginView = true
             }
-            isRegistering = false
         }
+        isRegistering = false
+    }
     var body: some View {
         ZStack{
             Image("background") // Set the desired image as the background
@@ -138,7 +142,7 @@ struct LoginView: View {
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
             VStack {
-                Text("Login to the program:")
+                Text("Login to the app:")
                     .font(.headline)
                     .padding()
 
