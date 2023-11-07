@@ -638,28 +638,39 @@ struct generateRandomNoView_time_limit_heart_attack: View {
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
-            VStack {
-                Button {
-                    generatedShuffleQuestionSet = generateRandomIndex()
-                    timer.startTimer()
-                    isShowingNextView.toggle()
-                } label: {
-                    HStack {
-                        Image(systemName: "play.fill")
-                            .font(Font.system(size: 20))
-                        Text("Start game")
-                            .font(.title)
-                    }
+            VStack(spacing: 40) {
+                Text("This gameplay has 3 questions in total, each question carries 1 mark, and you have 15 seconds to answer all questions")
+                    .font(.system(size:20))
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
                     .padding()
-                    .background(
-                        ZStack {
-                            Capsule()
-                                .stroke(Color.black, lineWidth: 2) // Adjust the line width as desired
+                    .background(Color.black.opacity(0.5))
+                    .cornerRadius(20)
+                    .padding(.horizontal)
+                    .frame(width: 600, height: 150)
+                VStack {
+                    Button {
+                        generatedShuffleQuestionSet = generateRandomIndex()
+                        timer.startTimer()
+                        isShowingNextView.toggle()
+                    } label: {
+                        HStack {
+                            Image(systemName: "play.fill")
+                                .font(Font.system(size: 20))
+                            Text("Start game")
+                                .font(.title)
                         }
-                    )
-                }
-                NavigationLink(destination: ContentView_time_limit_heart_attack(timer: timer, isShowingResultView: $isShowingResultView, generatedShuffleQuestionSet: generatedShuffleQuestionSet, currentMark: $currentMark, username: username, wrongQArray: $wrongQArray), isActive: $isShowingNextView) {
-                    EmptyView()
+                        .padding()
+                        .background(
+                            ZStack {
+                                Capsule()
+                                    .stroke(Color.black, lineWidth: 2) // Adjust the line width as desired
+                            }
+                        )
+                    }
+                    NavigationLink(destination: ContentView_time_limit_heart_attack(timer: timer, isShowingResultView: $isShowingResultView, generatedShuffleQuestionSet: generatedShuffleQuestionSet, currentMark: $currentMark, username: username, wrongQArray: $wrongQArray), isActive: $isShowingNextView) {
+                        EmptyView()
+                    }
                 }
             }
         }
@@ -676,4 +687,3 @@ struct generateRandomNoView_time_limit_heart_attack: View {
         return generatedShuffleQuestionSet // Return the generated value
     }
 }
-
