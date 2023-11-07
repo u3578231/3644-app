@@ -15,16 +15,55 @@ struct DictionaryView: View {
     let websiteURL = "https://www.tutorialspoint.com/artificial_intelligence/index.htm"
 
     var filteredWords: [String] {
-        if searchText.isEmpty {
-            return dictionary_word
-        } else {
-            return dictionary_word.filter { $0.localizedCaseInsensitiveContains(searchText) }
+            if searchText.isEmpty {
+                return dictionaryWordFromJSON()
+            } else {
+                return dictionaryWordFromJSON().filter { $0.localizedCaseInsensitiveContains(searchText) }
+            }
+        }
+    private func dictionaryWordFromJSON() -> [String] {
+            do {
+                let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+                let fileURL = documentsDirectory.appendingPathComponent("dictionary.json")
+                let jsonData = try Data(contentsOf: fileURL)
+                
+                let decoder = JSONDecoder()
+                let dictionaryArray = try decoder.decode([[String: String]].self, from: jsonData)
+                
+                return dictionaryArray.compactMap { $0["word"] }
+            } catch {
+                print("Error in reading JSON file: \(error)")
+                return []
+            }
+        }
+    private func createJSONFile() {
+        var dictionaryArray: [[String: String]] = []
+
+        for index in 0..<dictionary_word.count {
+            let dictionary: [String: String] = [
+                "word": dictionary_word[index],
+                "purpose": dictionary_purpose[index],
+                "how_does_it_work": dictionary_how_does_it_work[index],
+                "example": dictionary_example[index]
+            ]
+            dictionaryArray.append(dictionary)
+        }
+
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: dictionaryArray, options: .prettyPrinted)
+            if let jsonString = String(data: jsonData, encoding: .utf8) {
+                let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+                let fileURL = documentsDirectory.appendingPathComponent("dictionary.json")
+                try jsonString.write(to: fileURL, atomically: true, encoding: .utf8)
+                print("JSON file created successfully.")
+            }
+        } catch {
+            print("Error in creating JSON file: \(error)")
         }
     }
-
     var body: some View {
             ZStack{
-                Image("background") // Set the desired image as the background
+                Image("background")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .edgesIgnoringSafeArea(.all)
@@ -35,12 +74,12 @@ struct DictionaryView: View {
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .padding(.top,70)
                         List(filteredWords, id: \.self) { word in
-                            NavigationLink(
-                                destination: DictionaryWordView(word: word, navigateToPlayMenu: $navigateToPlayMenu, username: username)
-                            ) {
-                                Text(word)
-                            }
-                        }
+                           NavigationLink(
+                               destination: DictionaryWordView(word: word, navigateToPlayMenu: $navigateToPlayMenu, username: username)
+                           ) {
+                               Text(word)
+                           }
+                       }
                         Link(destination: URL(string: websiteURL)!) {
                             VStack{
                                 Text("For more vocabularies,")
@@ -63,10 +102,13 @@ struct DictionaryView: View {
                 )
                 .navigationTitle("Dictionary")
             }
+            .onAppear {
+                       createJSONFile()
+                   }
     }
     private var backButton: some View {
         Button(action: {
-            navigateToPlayMenu = true // Set navigateToPlayMenu to true
+            navigateToPlayMenu = true
         }) {
             Image(systemName: "chevron.left")
                 .font(.title)
@@ -88,54 +130,79 @@ struct DictionaryWordView: View {
     let word: String
     @Binding var navigateToPlayMenu: Bool
     let username: String
+    @State private var wordData: DictionaryData?
+    struct DictionaryData: Codable {
+        let purpose: String
+        let howDoesItWork: String
+        let example: String
+    }
     var body: some View {
         ZStack{
-            VStack {
+            VStack(spacing: -60) {
                 Text("Definition of \(word)")
                     .font(.headline)
-                
                 GeometryReader { geometry in
                     ScrollView(.horizontal) {
                         HStack {
                             GenerateImageView(word: word)
                         }
                     }
-                    .frame(height: geometry.size.height * 0.3) // Adjust the height as desired
+                    .frame(height: geometry.size.height * 0.3)
                 }
                 .overlay(
-                    Group { // Use Group as a container for the conditional overlay
-                        if let index = dictionary_word.firstIndex(of: word) {
-                            VStack(spacing: 12) { // Adjust the spacing between texts as desired
-                                SectionBox(title: "Purpose", content: dictionary_purpose[index])
-                                    .frame(maxWidth: .infinity) // Adjust the frame size of Purpose section
-                                SectionBox(title: "How does it work?", content: dictionary_how_does_it_work[index])
-                                    .frame(maxWidth: .infinity) // Adjust the frame size of How does it work? section
-                                SectionBox(title: "Example", content: dictionary_example[index])
-                                    .frame(maxWidth: .infinity) // Adjust the frame size of Example section
+                    Group {
+                        if let data = wordData {
+                            VStack(spacing: 20) {
+                                SectionBox(title: "Purpose", content: data.purpose)
+                                    .frame(maxWidth: .infinity)
+                                SectionBox(title: "How does it work?", content: data.howDoesItWork)
+                                    .frame(maxWidth: .infinity)
+                                SectionBox(title: "Example", content: data.example)
+                                    .frame(maxWidth: .infinity)
                             }
                             .padding()
-                            .frame(maxWidth: .infinity, alignment: .top) // Align the overlay content to the top
-                            .background(Color.white) // Optional: Add a background color to the overlay content
-                            .padding(.bottom, -50) // Add spacing between the overlay and the images
+                            .frame(maxWidth: .infinity, alignment: .top)
+                            .padding(.bottom, -50)
                             .opacity(0.9)
                         }
                     }
-                        .scrollContentBackground(.hidden)
-                    
+                    .scrollContentBackground(.hidden)
+                    .padding(.top, -140)
                 )
             }
         }
         NavigationLink(destination: PlayMenu(shuffle_question_set: 0, username: username), isActive: $navigateToPlayMenu) {
             EmptyView()
         }
+        .onAppear {
+            fetchWordData()
+        }
     }
+    private func fetchWordData() {
+            do {
+                let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+                let fileURL = documentsDirectory.appendingPathComponent("dictionary.json")
+                let jsonData = try Data(contentsOf: fileURL)
+                
+                let decoder = JSONDecoder()
+                let dictionaryArray = try decoder.decode([[String: String]].self, from: jsonData)
+                
+                if let index = dictionaryArray.firstIndex(where: { $0["word"] == word }) {
+                    let data = dictionaryArray[index]
+                    let dictionaryData = DictionaryData(purpose: data["purpose"] ?? "",
+                                                        howDoesItWork: data["how_does_it_work"] ?? "",
+                                                        example: data["example"] ?? "")
+                    wordData = dictionaryData
+                }
+            } catch {
+                print("Error in reading JSON file: \(error)")
+            }
+        }
 }
-
 
 struct SectionBox: View {
     let title: String
     let content: String
-
     var body: some View {
         VStack(alignment: .center, spacing: 8) { // Align the content in the center
             Spacer().frame(height: 6)
@@ -147,7 +214,7 @@ struct SectionBox: View {
                 .padding()
         }
         .background(
-            RoundedRectangle(cornerRadius: 8)
+            RoundedRectangle(cornerRadius: 10)
                 .stroke(Color.black, lineWidth: 1)
         )
     }
