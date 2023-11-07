@@ -31,7 +31,11 @@ struct PlayMenu: View {
                         .font(.title)
                 }
                 List {
-                    Section(header: Text("Game Mode")) {
+                    Section(header: Text("Game Mode")
+                        .font(.system(size: 26))
+                        .bold()
+                        .foregroundColor(.red)
+                    ) {
                         NavigationLink(destination: generateRandomNoView(shuffle_question_set: 0, username: username)) {
                             HStack {
                                 Image("time limit easy")
@@ -42,7 +46,7 @@ struct PlayMenu: View {
                                 VStack(alignment: .leading) {
                                     Text("Mode: Time Limit Easy")
                                         .foregroundColor(.red)
-                                    
+                                        .bold()
                                     Spacer()
                                     
                                     HStack {
@@ -55,6 +59,12 @@ struct PlayMenu: View {
                                     }
                                 }
                                 .padding()
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.blue, lineWidth: 2)
+                                        .frame(width: 370, height: 150)
+                                        .padding(.leading,178)
+                                )
                             }
                         }
                         NavigationLink(destination: generateRandomNoView_no_time_limit(shuffle_question_set: 0, username: username)) {
@@ -67,7 +77,7 @@ struct PlayMenu: View {
                                 VStack(alignment: .leading) {
                                     Text("Mode: No Time Limit")
                                         .foregroundColor(.red)
-                                    
+                                        .bold()
                                     Spacer()
                                     
                                     HStack {
@@ -78,6 +88,12 @@ struct PlayMenu: View {
                                     }
                                 }
                                 .padding()
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.blue, lineWidth: 2)
+                                        .frame(width: 370, height: 150)
+                                        .padding(.leading,190)
+                                )
                             }
                         }
                         NavigationLink(destination: generateRandomNoView_time_limit_heart_attack(username: username)) {
@@ -88,8 +104,9 @@ struct PlayMenu: View {
                                     .frame(width: 150, height: 150) // Adjust the size as needed
                                 
                                 VStack(alignment: .leading) {
-                                    Text("Mode: Time Limit Hard")
+                                    Text("Mode: Time Limit Heart attack/Hard")
                                         .foregroundColor(.red)
+                                        .bold()
                                     
                                     Spacer()
                                     
@@ -105,19 +122,25 @@ struct PlayMenu: View {
                                     }
                                 }
                                 .padding()
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.blue, lineWidth: 2)
+                                        .frame(width: 370, height: 150)
+                                        .padding(.leading,72)
+                                )
                             }
                         }
                         NavigationLink(destination: AR_View()) {
-                            HStack (spacing: 50){
+                            HStack(spacing: 50) {
                                 Image("AR")
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
-                                    .frame(width: 150, height: 150) // Adjust the size as needed
+                                    .frame(width: 150, height: 150)
                                 
                                 VStack(alignment: .leading) {
                                     Text("Mode: AR")
                                         .foregroundColor(.red)
-                                    
+                                        .bold()
                                     Spacer()
                                     
                                     HStack {
@@ -126,11 +149,21 @@ struct PlayMenu: View {
                                     }
                                 }
                                 .padding()
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.blue, lineWidth: 2)
+                                        .frame(width: 318, height: 150)
+                                        .padding(.leading,214)
+                                )
                             }
+                            .padding()
                         }
                     }
                     
-                    Section(header: Text("Learning")) {
+                    Section(header: Text("Learning")
+                        .font(.system(size: 26))
+                        .foregroundColor(.red)
+                        .bold()) {
                         NavigationLink(destination: DictionaryView(navigateToPlayMenu: $navigateToPlayMenu, username: username)) {
                             Text("Dictionary")
                         }
@@ -142,8 +175,9 @@ struct PlayMenu: View {
                         }
                     }
                 }
+                .listRowBackground(Color.blue.opacity(0.2))
                 .scrollContentBackground(.hidden)
-                .padding(.top, 200) // Adjust the top padding as needed
+                .padding(.top, 130) // Adjust the top padding as needed
                 
                 Spacer() // Add a spacer to push the lists to the top
                     .navigationTitle("Play Menu")
