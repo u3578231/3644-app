@@ -643,6 +643,15 @@ struct generateRandomNoView_no_time_limit: View {
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
             VStack {
+                Text("This gameplay has 3 questions in total, each question carries 1 mark. If you get the tips, the maximum mark carried is 0.5 mark.")
+                    .font(.system(size:20))
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+                    .padding()
+                    .background(Color.black.opacity(0.5))
+                    .cornerRadius(20)
+                    .padding(.horizontal)
+                    .frame(width: 600, height: 150)
                 NavigationLink(destination: ContentView_no_time_limit(
                     generatedShuffleQuestionSet: generatedShuffleQuestionSet,
                     currentMark: $currentMark,
