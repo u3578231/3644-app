@@ -14,7 +14,10 @@ struct ProfileView: View {
     @State private var newUsername = ""
     @State private var showCamera = false
     @State private var profileImage: UIImage?
-    @State private var showAlert = false
+    @State private var isShowingEmptyPasswordAlert = false
+    @State private var isShowingSamePasswordAlert = false
+    @State private var isShowingPasswordChangedAlert = false
+    @FocusState private var isTextFieldFocused: Bool
     var body: some View {
         ZStack {
             Image("background")
@@ -52,19 +55,27 @@ struct ProfileView: View {
                                 .font(.title)
                                 .fontWeight(.bold)
                                 .foregroundColor(.primary)
-                                .multilineTextAlignment(.leading) // Align the text to the left
-                                .padding(.vertical, 20) // Add padding to adjust the spacing between the image and the username
+                                .multilineTextAlignment(.leading)
+                                .padding(.vertical, 20)
                             
                             TextField("New Password", text: $newPassword)
-                                .autocapitalization(.none) // Disable autocapitalization
-                            
+                                .focused($isTextFieldFocused) // Apply the focused state
+                                .autocapitalization(.none)
+                                .onTapGesture {
+                                    isTextFieldFocused = true // Set the focused state to true
+                                }
+                            Spacer().frame(height: 0)
                         }
                         .padding(.horizontal)
                         Section {
-                            Button("Change Password") {
+                            Button(action: {
                                 changePassword(for: userIndex)
+                            }) {
+                                Text("Change Password")
                             }
                         }
+                        .padding(.horizontal)
+                        .padding(.vertical, 10)
                         .padding(.horizontal)
                         .padding(.vertical, 10)
                     } else {
@@ -77,26 +88,48 @@ struct ProfileView: View {
                 CameraView(profileImage: $profileImage)
             }
             .navigationBarTitle(Text("Profile"))
-            .alert(isPresented: $showAlert) {
-                Alert(title: Text("Warning"), message: Text("New password cannot be the same as the original password."), dismissButton: .default(Text("OK")))
+            .alert(isPresented: $isShowingEmptyPasswordAlert) {
+                        Alert(
+                            title: Text("Warning"),
+                            message: Text("New password cannot be empty."),
+                            dismissButton: .default(Text("OK"))
+                        )
+                    }
+            .alert(isPresented: $isShowingSamePasswordAlert) {
+                Alert(
+                    title: Text("Warning"),
+                    message: Text("New password cannot be the same as the original password."),
+                    dismissButton: .default(Text("OK"))
+                )
+            }
+            .alert(isPresented: $isShowingPasswordChangedAlert) {
+                Alert(
+                    title: Text("Success"),
+                    message: Text("Password changed"),
+                    dismissButton: .default(Text("OK"))
+                )
             }
         }
     }
-    
     private func changePassword(for userIndex: Int) {
         let originalPassword = userArray[userIndex].password
         
-        // Check if the new password is different from the original password
-        guard newPassword != originalPassword else {
-            showAlert = true
+        guard !newPassword.isEmpty else {
+            isShowingEmptyPasswordAlert = true
             return
         }
         
-        // Perform the password change logic here
+        guard newPassword != originalPassword else {
+            isShowingSamePasswordAlert = true
+            return
+        }
+        
         userArray[userIndex].password = newPassword
         print("New password: \(userArray[userIndex].password)")
+        newPassword = ""
         
-        newPassword = "" // Reset the new password field
+        // Show a success message
+        isShowingPasswordChangedAlert = true
     }
 }
 
