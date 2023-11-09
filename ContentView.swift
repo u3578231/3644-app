@@ -168,6 +168,7 @@ struct ContentView_time_limit: View {
                     Spacer()
                 }
                 .navigationBarBackButtonHidden(true)
+                .navigationTitle("Question 1")
                 .navigationBarItems(trailing:
                     Menu {
                         Button(action: {
@@ -175,38 +176,15 @@ struct ContentView_time_limit: View {
                         }) {
                             Label("PlayMenu", systemImage: "play")
                         }
-                        
-                        Button(action: {
-                            handleMenuItemSelection(1) // Overview
-                        }) {
-                            Label("Overview", systemImage: "info.circle")
-                        }
-                        Button(action: {
-                            handleMenuItemSelection(2) // Overview
-                        }) {
-                            Label("Dictionary", systemImage: "book.circle")
-                        }
                     } label: {
                         Image(systemName: "line.horizontal.3")
                             .imageScale(.large)
                     }
                 )
                 .background(
-                    NavigationLink(destination: OverviewView(showMenu: $showMenu, navigateToPlayMenu: $navigateToPlayMenu, username: username), isActive: $navigateToOverview) {
-                        EmptyView()
-                    }
-                        .hidden()
-                )
-                .background(
                     NavigationLink(destination: PlayMenu(shuffle_question_set: 0, username: username), isActive: $navigateToPlayMenu) {
                         EmptyView()
                     }
-                        .hidden()
-                )
-                .background(
-                    NavigationLink(destination: DictionaryView(navigateToPlayMenu:$navigateToPlayMenu,username: username), isActive: $navigateToDictionary) {
-                            EmptyView()
-                        }
                         .hidden()
                 )
             }
@@ -236,10 +214,12 @@ struct ContentView_time_limit: View {
                     if showCorrectMessage {
                         Text("You are correct")
                             .padding(.top, -400)
+                            .font(.system(size:25))
                             .foregroundColor(.green)
                     } else if showWrongMessage {
                         Text("You are wrong")
                             .padding(.top, -400)
+                            .font(.system(size:25))
                             .foregroundColor(.red)
                     } else {
                         EmptyView()
@@ -343,7 +323,7 @@ struct Question2View_time_limit: View {
     }
     var body: some View {
             ZStack{
-                Image("background") // Set the desired image as the background
+                Image("background")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .edgesIgnoringSafeArea(.all)
@@ -354,7 +334,6 @@ struct Question2View_time_limit: View {
                     let questionindex = findquestionIndex()
                     QuestionView(number: questionindex, question: questions[questionindex], ansA: optionA[questionindex], ansB: optionB[questionindex], ansC: optionC[questionindex], ansD: optionD[questionindex]) { answer in
                         selectedq1Answer = answer
-                        // Increment mark if answer is correct
                         if timerManager.timeRemaining > 0 {
                             selectedq1Answer = answer
                             checkAnswerAndIncrementMark()
@@ -385,6 +364,7 @@ struct Question2View_time_limit: View {
                     Spacer()
                 }
                 .navigationBarBackButtonHidden(true)
+                .navigationTitle("Question 2")
                 .navigationBarItems(trailing:
                     Menu {
                         Button(action: {
@@ -392,38 +372,15 @@ struct Question2View_time_limit: View {
                         }) {
                             Label("PlayMenu", systemImage: "play")
                         }
-                        
-                        Button(action: {
-                            handleMenuItemSelection(1) // Overview
-                        }) {
-                            Label("Overview", systemImage: "info.circle")
-                        }
-                        Button(action: {
-                            handleMenuItemSelection(2) // Overview
-                        }) {
-                            Label("Dictionary", systemImage: "book.circle")
-                        }
                     } label: {
                         Image(systemName: "line.horizontal.3")
                             .imageScale(.large)
                     }
                 )
                 .background(
-                    NavigationLink(destination: OverviewView(showMenu: $showMenu, navigateToPlayMenu: $navigateToPlayMenu, username: username), isActive: $navigateToOverview) {
-                        EmptyView()
-                    }
-                        .hidden()
-                )
-                .background(
                     NavigationLink(destination: PlayMenu(shuffle_question_set: 0, username: username), isActive: $navigateToPlayMenu) {
                         EmptyView()
                     }
-                        .hidden()
-                )
-                .background(
-                    NavigationLink(destination: DictionaryView( navigateToPlayMenu: $navigateToPlayMenu,username: username), isActive: $navigateToDictionary) {
-                            EmptyView()
-                        }
                         .hidden()
                 )
             }
@@ -452,9 +409,13 @@ struct Question2View_time_limit: View {
                 Group {
                     if showCorrectMessage {
                         Text("You are correct")
+                            .font(.system(size:25))
+                            .foregroundColor(.green)
                             .padding(.top, -400)
                     } else if showWrongMessage {
                         Text("You are wrong")
+                            .font(.system(size:25))
+                            .foregroundColor(.red)
                             .padding(.top, -400)
                     } else {
                         EmptyView()
@@ -532,6 +493,7 @@ struct Question3View_time_limit: View {
     @State private var showResultView = false
     @State private var navigateToDictionary = false
     @Binding private var wrongQArray : [Int]
+    @State private var gameplay = "time limit easy"
     var q1_mark: Double
     var q2_mark: Double
     @State private var q3_mark : Double = 0
@@ -584,7 +546,7 @@ struct Question3View_time_limit: View {
     }
     var body: some View {
         ZStack{
-            Image("background") // Set the desired image as the background
+            Image("background")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
@@ -634,25 +596,16 @@ struct Question3View_time_limit: View {
                     )
                 }
             .fullScreenCover(isPresented: $showResultView) {
-                ResultView(currentMark: $currentMark, username: username).environmentObject(timerManager)
+                ResultView(currentMark: $currentMark, gameplay: $gameplay,username: username).environmentObject(timerManager)
             }
             .navigationBarBackButtonHidden(true)
+            .navigationTitle("Question 3")
             .navigationBarItems(trailing:
                 Menu {
                     Button(action: {
                         handleMenuItemSelection(0) // PlayMenu
                     }) {
                         Label("PlayMenu", systemImage: "play")
-                    }
-                    Button(action: {
-                        handleMenuItemSelection(1) // Overview
-                    }) {
-                        Label("Overview", systemImage: "info.circle")
-                    }
-                    Button(action: {
-                        handleMenuItemSelection(2) // Overview
-                    }) {
-                        Label("Dictionary", systemImage: "book.circle")
                     }
                 } label: {
                     Image(systemName: "line.horizontal.3")
@@ -661,22 +614,10 @@ struct Question3View_time_limit: View {
                 
             )
             .background(
-                NavigationLink(destination: OverviewView(showMenu: $showMenu, navigateToPlayMenu: $navigateToPlayMenu, username: username), isActive: $navigateToOverview) {
-                    EmptyView()
-                }
-                .hidden()
-            )
-            .background(
                 NavigationLink(destination: PlayMenu(shuffle_question_set: 0, username: username), isActive: $navigateToPlayMenu) {
                     EmptyView()
                 }
                 .hidden()
-            )
-            .background(
-                NavigationLink(destination: DictionaryView(navigateToPlayMenu: $navigateToPlayMenu,username: username), isActive: $navigateToDictionary) {
-                        EmptyView()
-                    }
-                    .hidden()
             )
         }
         .alert(isPresented: $showAlert) {
@@ -704,9 +645,13 @@ struct Question3View_time_limit: View {
             Group {
                 if showCorrectMessage {
                     Text("You are correct")
+                        .font(.system(size:25))
+                        .foregroundColor(.green)
                         .padding(.top, -400)
                 } else if showWrongMessage {
                     Text("You are wrong")
+                        .font(.system(size:25))
+                        .foregroundColor(.red)
                         .padding(.top, -400)
                 } else {
                     EmptyView()
@@ -859,62 +804,6 @@ struct OptionD: View{
     }
 }
 
-struct ResultView: View {
-    @State private var navigateToPlayMenu = false
-    @Binding var currentMark: Double
-    let username: String
-    
-    private var formattedMark: String {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-        numberFormatter.maximumFractionDigits = 1
-        return numberFormatter.string(from: NSNumber(value: roundedMark)) ?? ""
-    }
-    
-    private var roundedMark: Double {
-        return (currentMark * 10).rounded() / 10
-    }
-    
-    private var emoji: String {
-        if currentMark == 3 {
-            return "👍👍"
-        } else if currentMark >= 2 && currentMark < 3 {
-            return "👍"
-        } else {
-            return "😢"
-        }
-    }
-    
-    var body: some View {
-        NavigationView {
-            ZStack {
-                Image("background")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .edgesIgnoringSafeArea(.all)
-                VStack {
-                    Text("Result is \(formattedMark)")
-                        .font(.largeTitle)
-                        .padding()
-                    Text("\(emoji)")
-                        .font(.largeTitle)
-                        .padding()
-                    NavigationLink(destination: PlayMenu(shuffle_question_set: 0, username: username), isActive: $navigateToPlayMenu) {
-                        EmptyView()
-                    }
-                    
-                    Button("Menu") {
-                        print("Navigating to PlayMenu")
-                        navigateToPlayMenu = true
-                    }
-                }
-            }
-        }
-        .navigationBarBackButtonHidden()
-        .navigationViewStyle(StackNavigationViewStyle())
-        .animation(.default)
-    }
-}
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
@@ -980,8 +869,8 @@ struct OverviewView: View {
             VStack {
                 if let userIndex = userArray.firstIndex(where: { $0.username == username }) {
                     let markArray = userArray[userIndex].MarkArray.map { String($0) }
-                    let marks = markArray.compactMap { Double($0) } // Convert markArray to an array of Double values
-                    let averageMark = marks.reduce(0, +) / Double(marks.count) // Calculate the mean
+                    let marks = markArray.compactMap { Double($0) }
+                    let averageMark = marks.reduce(0, +) / Double(marks.count)
                     if (!markArray.isEmpty){
                         if averageMark <= 1.5 {
                             Text("You need improvement")
@@ -998,10 +887,9 @@ struct OverviewView: View {
             }
             .font(.headline)
             .padding()
-            //.background(Color.white.opacity(0.8))
             .cornerRadius(10)
             .padding()
-            .offset(y: -350) // Adjust the offset value as needed
+            .offset(y: -350)
         }
         
         NavigationLink(destination: PlayMenu(shuffle_question_set: 0, username: username), isActive: $navigateToPlayMenu) {
@@ -1016,7 +904,7 @@ struct OverviewView: View {
 
     private var backButton: some View {
         Button(action: {
-            navigateToPlayMenu = true // Set navigateToPlayMenu to true
+            navigateToPlayMenu = true
         }) {
             Image(systemName: "chevron.left")
                 .font(.title)
@@ -1149,6 +1037,7 @@ struct WelcomeView: View {
                 NavigationLink(destination: ObjectiveView(), isActive: $navigateToObjectiveView) {
                     EmptyView()
                 }
+                .isDetailLink(false)
             )
         }
         .navigationViewStyle(StackNavigationViewStyle())
