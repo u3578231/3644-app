@@ -10,7 +10,6 @@ import SwiftUI
 struct DictionaryView: View {
     @State private var searchText = ""
     @Binding var navigateToPlayMenu: Bool
-    //@State private var navigateToDictionary = false
     let username: String
     let websiteURL = "https://www.tutorialspoint.com/artificial_intelligence/index.htm"
 
