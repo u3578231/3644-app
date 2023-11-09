@@ -12,7 +12,7 @@ struct ObjectiveView: View {
     
     var body: some View {
         ZStack {
-            Image("background") // Set the desired image as the background
+            Image("background")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
@@ -54,7 +54,7 @@ struct ObjectiveView: View {
                 Spacer()
             }
         }
-        .navigationBarBackButtonHidden(true)
+        .navigationBarBackButtonHidden(false)
     }
 }
 
