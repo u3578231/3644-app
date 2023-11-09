@@ -59,6 +59,7 @@ struct ContentView_time_limit_heart_attack: View {
     @State private var alertMessage = ""
     @State private var previousAnswer = ""
     @State private var questionAnsweredCorrectly: Bool = false
+    @State private var gameplay = "time limit heart attack"
     @Binding private var wrongQArray: [Int]
     @State private var q1_mark : Double = 0
     let username: String
@@ -69,12 +70,9 @@ struct ContentView_time_limit_heart_attack: View {
     }
     func generateCurrentDateTime(currentMark: Binding<Double>) {
         let currentDate = Date()
-        // Create a date formatter
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        dateFormatter.timeZone = TimeZone(identifier: "Asia/Hong_Kong") // Set the time zone to Hong Kong
-
-        // Format the date to a string using the formatter
+        dateFormatter.timeZone = TimeZone(identifier: "Asia/Hong_Kong")
         let formattedDate = dateFormatter.string(from: currentDate)
         print("Current Date: \(formattedDate)")
         if let userIndex = userArray.firstIndex(where: { $0.username == username }) {
@@ -101,7 +99,7 @@ struct ContentView_time_limit_heart_attack: View {
         }
     var body: some View {
         ZStack {
-            Image("background") // Set the desired image as the background
+            Image("background")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
@@ -141,6 +139,7 @@ struct ContentView_time_limit_heart_attack: View {
                     }
                 }
                 Text("Time remaining: \(timer.timeRemaining)")
+                    .font(.largeTitle)
                     .edgesIgnoringSafeArea(.bottom)
                     .onReceive(timer.objectWillChange) { _ in
                             if timer.timeRemaining == 0 {
@@ -150,7 +149,7 @@ struct ContentView_time_limit_heart_attack: View {
                         }
                 }
             .fullScreenCover(isPresented: $isShowingResultView) {
-                ResultView(currentMark: $currentMark, username: username)
+                ResultView(currentMark: $currentMark, gameplay: $gameplay, username: username)
             }
             .navigationBarItems(trailing:
                 Menu {
@@ -161,40 +160,13 @@ struct ContentView_time_limit_heart_attack: View {
                     }) {
                         Label("PlayMenu", systemImage: "play")
                     }
-                    
-                    Button(action: {
-                        showAlert = true
-                        timer.stopTimer()
-                        alertMessage = "Are you sure you want to go to Overview?"
-                    }) {
-                        Label("Overview", systemImage: "info.circle")
-                    }
-                    Button(action: {
-                        showAlert = true
-                        timer.stopTimer()
-                        alertMessage = "Are you sure you want to go to Dictionary?"
-                    }) {
-                        Label("Dictionary", systemImage: "book.circle")
-                    }
                 } label: {
                     Image(systemName: "line.horizontal.3")
                         .imageScale(.large)
                 }
             )
             .background(
-                NavigationLink(destination: OverviewView(showMenu: $showMenu,navigateToPlayMenu: $navigateToPlayMenu, username: username), isActive: $navigateToOverview) {
-                    EmptyView()
-                }
-                .hidden()
-            )
-            .background(
                 NavigationLink(destination: PlayMenu(shuffle_question_set: 0, username: username), isActive: $navigateToPlayMenu) {
-                    EmptyView()
-                }
-                .hidden()
-            )
-            .background(
-                NavigationLink(destination: DictionaryView(navigateToPlayMenu: $navigateToPlayMenu,username: username), isActive: $navigateToDictionary) {
                     EmptyView()
                 }
                 .hidden()
@@ -248,6 +220,7 @@ struct Question2View_time_limit_heart_attack: View {
     @Binding private var currentMark: Double
     @State private var previousAnswer = ""
     @Binding private var wrongQArray: [Int]
+    @State private var gameplay = "time limit heart attack"
     var generatedShuffleQuestionSet: Int
     let username: String
     var q1_mark : Double
@@ -260,9 +233,7 @@ struct Question2View_time_limit_heart_attack: View {
         // Create a date formatter
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        dateFormatter.timeZone = TimeZone(identifier: "Asia/Hong_Kong") // Set the time zone to Hong Kong
-
-        // Format the date to a string using the formatter
+        dateFormatter.timeZone = TimeZone(identifier: "Asia/Hong_Kong")
         let formattedDate = dateFormatter.string(from: currentDate)
         print("Current Date: \(formattedDate)")
         if let userIndex = userArray.firstIndex(where: { $0.username == username }) {
@@ -290,7 +261,7 @@ struct Question2View_time_limit_heart_attack: View {
         }
     var body: some View {
         ZStack {
-            Image("background") // Set the desired image as the background
+            Image("background")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
@@ -331,6 +302,7 @@ struct Question2View_time_limit_heart_attack: View {
                     }
                 }
                 Text("Time remaining: \(timer.timeRemaining)")
+                    .font(.largeTitle)
                     .edgesIgnoringSafeArea(.bottom)
                     .onReceive(timer.objectWillChange) { _ in
                             if timer.timeRemaining == 0 {
@@ -340,7 +312,7 @@ struct Question2View_time_limit_heart_attack: View {
                         }
                 }
             .fullScreenCover(isPresented: $isShowingResultView) {
-                ResultView(currentMark: $currentMark, username: username)
+                ResultView(currentMark: $currentMark, gameplay: $gameplay, username: username)
             }
             .navigationBarTitle("Question 2")
             .navigationBarBackButtonHidden(true)
@@ -353,40 +325,13 @@ struct Question2View_time_limit_heart_attack: View {
                     }) {
                         Label("PlayMenu", systemImage: "play")
                     }
-                    
-                    Button(action: {
-                        showAlert = true
-                        timer.stopTimer()
-                        alertMessage = "Are you sure you want to go to Overview?"
-                    }) {
-                        Label("Overview", systemImage: "info.circle")
-                    }
-                    Button(action: {
-                        showAlert = true
-                        timer.stopTimer()
-                        alertMessage = "Are you sure you want to go to Dictionary?"
-                    }) {
-                        Label("Dictionary", systemImage: "book.circle")
-                    }
                 } label: {
                     Image(systemName: "line.horizontal.3")
                         .imageScale(.large)
                 }
             )
             .background(
-                NavigationLink(destination: OverviewView(showMenu: $showMenu,navigateToPlayMenu: $navigateToPlayMenu, username: username), isActive: $navigateToOverview) {
-                    EmptyView()
-                }
-                .hidden()
-            )
-            .background(
                 NavigationLink(destination: PlayMenu(shuffle_question_set: 0, username: username), isActive: $navigateToPlayMenu) {
-                    EmptyView()
-                }
-                .hidden()
-            )
-            .background(
-                NavigationLink(destination: DictionaryView( navigateToPlayMenu:$navigateToPlayMenu,username: username), isActive: $navigateToDictionary) {
                     EmptyView()
                 }
                 .hidden()
@@ -440,6 +385,7 @@ struct Question3View_time_limit_heart_attack: View {
     @State private var alertMessage = ""
     @Binding private var currentMark : Double
     @State private var questionAnsweredCorrectly = false
+    @State private var gameplay = "time limit heart attack"
     @State private var previousAnswer = ""
     var generatedShuffleQuestionSet: Int
     let username: String
@@ -456,8 +402,7 @@ struct Question3View_time_limit_heart_attack: View {
         currentMark.wrappedValue = q1_mark + q2_mark + q3_mark
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        dateFormatter.timeZone = TimeZone(identifier: "Asia/Hong_Kong") // Set the time zone to Hong Kong
-        // Format the date to a string using the formatter
+        dateFormatter.timeZone = TimeZone(identifier: "Asia/Hong_Kong")
         let formattedDate = dateFormatter.string(from: currentDate)
         print("Current Date: \(formattedDate)")
         if let userIndex = userArray.firstIndex(where: { $0.username == username }) {
@@ -486,7 +431,7 @@ struct Question3View_time_limit_heart_attack: View {
         }
     var body: some View {
         ZStack {
-            Image("background") // Set the desired image as the background
+            Image("background")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
@@ -518,6 +463,7 @@ struct Question3View_time_limit_heart_attack: View {
                 .offset(y: -30)
                 Text("Wait for timer to finish")
                 Text("Time remaining: \(timer.timeRemaining)")
+                    .font(.largeTitle)
                     .edgesIgnoringSafeArea(.bottom)
                     .onReceive(timer.objectWillChange) { _ in
                             if timer.timeRemaining == 0 {
@@ -527,7 +473,7 @@ struct Question3View_time_limit_heart_attack: View {
                         }
             }
             .fullScreenCover(isPresented: $isShowingResultView) {
-                ResultView(currentMark: $currentMark, username: username)
+                ResultView(currentMark: $currentMark, gameplay: $gameplay, username: username)
             }
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(trailing:
@@ -539,40 +485,13 @@ struct Question3View_time_limit_heart_attack: View {
                     }) {
                         Label("PlayMenu", systemImage: "play")
                     }
-                    
-                    Button(action: {
-                        showAlert = true
-                        timer.stopTimer()
-                        alertMessage = "Are you sure you want to go to Overview?"
-                    }) {
-                        Label("Overview", systemImage: "info.circle")
-                    }
-                    Button(action: {
-                        showAlert = true
-                        timer.stopTimer()
-                        alertMessage = "Are you sure you want to go to Dictionary?"
-                    }) {
-                        Label("Dictionary", systemImage: "book.circle")
-                    }
                 } label: {
                     Image(systemName: "line.horizontal.3")
                         .imageScale(.large)
                 }
             )
             .background(
-                NavigationLink(destination: OverviewView(showMenu: $showMenu, navigateToPlayMenu: $navigateToPlayMenu, username: username), isActive: $navigateToOverview) {
-                    EmptyView()
-                }
-                .hidden()
-            )
-            .background(
                 NavigationLink(destination: PlayMenu(shuffle_question_set: 0, username: username), isActive: $navigateToPlayMenu) {
-                    EmptyView()
-                }
-                .hidden()
-            )
-            .background(
-                NavigationLink(destination: DictionaryView(navigateToPlayMenu: $navigateToPlayMenu, username: username), isActive: $navigateToDictionary) {
                     EmptyView()
                 }
                 .hidden()
