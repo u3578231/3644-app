@@ -128,41 +128,16 @@ struct ContentView_no_time_limit: View {
                     }) {
                         Label("PlayMenu", systemImage: "play")
                     }
-                    
-                    Button(action: {
-                        showAlert = true
-                        alertMessage = "Are you sure you want to go to Overview?"
-                    }) {
-                        Label("Overview", systemImage: "info.circle")
-                    }
-                    Button(action: {
-                        showAlert = true
-                        alertMessage = "Are you sure you want to go to Dictionary?"
-                    }) {
-                        Label("Dictionary", systemImage: "book.circle")
-                    }
                 } label: {
                     Image(systemName: "line.horizontal.3")
                         .imageScale(.large)
                 }
             )
             .background(
-                NavigationLink(destination: OverviewView(showMenu: $showMenu, navigateToPlayMenu: $navigateToPlayMenu, username: username), isActive: $navigateToOverview) {
-                    EmptyView()
-                }
-                .hidden()
-            )
-            .background(
                 NavigationLink(destination: PlayMenu(shuffle_question_set: 0, username: username), isActive: $navigateToPlayMenu) {
                     EmptyView()
                 }
                 .hidden()
-            )
-            .background(
-                NavigationLink(destination: DictionaryView(navigateToPlayMenu: $navigateToPlayMenu,username: username), isActive: $navigateToDictionary) {
-                        EmptyView()
-                    }
-                    .hidden()
             )
         }
         .alert(isPresented: $showAlert) {
@@ -256,7 +231,7 @@ struct Question2View_no_time_limit: View {
         }
     var body: some View {
         ZStack {
-            Image("background") // Set the desired image as the background
+            Image("background")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
@@ -318,38 +293,13 @@ struct Question2View_no_time_limit: View {
                     }) {
                         Label("PlayMenu", systemImage: "play")
                     }
-                    
-                    Button(action: {
-                        showAlert = true
-                        alertMessage = "Are you sure you want to go to Overview?"
-                    }) {
-                        Label("Overview", systemImage: "info.circle")
-                    }
-                    Button(action: {
-                        showAlert = true
-                        alertMessage = "Are you sure you want to go to Dictionary?"
-                    }) {
-                        Label("Dictionary", systemImage: "book.circle")
-                    }
                 } label: {
                     Image(systemName: "line.horizontal.3")
                         .imageScale(.large)
                 }
             )
             .background(
-                NavigationLink(destination: OverviewView(showMenu: $showMenu, navigateToPlayMenu: $navigateToPlayMenu, username: username), isActive: $navigateToOverview) {
-                    EmptyView()
-                }
-                .hidden()
-            )
-            .background(
                 NavigationLink(destination: PlayMenu(shuffle_question_set: 0, username: username), isActive: $navigateToPlayMenu) {
-                    EmptyView()
-                }
-                .hidden()
-            )
-            .background(
-                NavigationLink(destination: DictionaryView(navigateToPlayMenu: $navigateToPlayMenu, username: username), isActive: $navigateToDictionary) {
                     EmptyView()
                 }
                 .hidden()
@@ -406,6 +356,7 @@ struct Question3View_no_time_limit: View {
     @State private var selectedq3Answer = ""
     @State private var showTips = false
     @State private var dateArray: [Date] = []
+    @State private var gameplay = "no time limit"
     @Binding private var wrongQArray: [Int]
     @Binding private var tipPressed : Bool
     @Binding private var tipPressed_q2 : Bool
@@ -445,8 +396,8 @@ struct Question3View_no_time_limit: View {
             .background(Color.white)
             .cornerRadius(10)
             .padding()
-            .transition(.scale)// Set a fixed width for the tips view
-            .background(Color.black.opacity(0.5)) // Semi-transparent background
+            .transition(.scale)
+            .background(Color.black.opacity(0.5))
             .ignoresSafeArea()
         }
     func generateCurrentDateTime(q1_mark: Double, q2_mark: Double, q3_mark: Double, currentMark: Binding<Double>) {
@@ -454,9 +405,7 @@ struct Question3View_no_time_limit: View {
         currentMark.wrappedValue = q1_mark + q2_mark + q3_mark
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        dateFormatter.timeZone = TimeZone(identifier: "Asia/Hong_Kong") // Set the time zone to Hong Kong
-
-        // Format the date to a string using the formatter
+        dateFormatter.timeZone = TimeZone(identifier: "Asia/Hong_Kong")
         let formattedDate = dateFormatter.string(from: currentDate)
         print("Current Date: \(formattedDate)")
         if let userIndex = userArray.firstIndex(where: { $0.username == username }) {
@@ -473,7 +422,7 @@ struct Question3View_no_time_limit: View {
     }
     var body: some View {
         ZStack {
-            Image("background") // Set the desired image as the background
+            Image("background")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
@@ -531,7 +480,7 @@ struct Question3View_no_time_limit: View {
                 }
             }
             .fullScreenCover(isPresented: $showResultView) {
-                ResultView(currentMark: $currentMark, username: username)
+                ResultView(currentMark: $currentMark, gameplay: $gameplay, username: username)
             }
             .navigationBarItems(trailing:
                 Menu {
@@ -541,38 +490,13 @@ struct Question3View_no_time_limit: View {
                     }) {
                         Label("PlayMenu", systemImage: "play")
                     }
-                    
-                    Button(action: {
-                        showAlert = true
-                        alertMessage = "Are you sure you want to go to Overview?"
-                    }) {
-                        Label("Overview", systemImage: "info.circle")
-                    }
-                    Button(action: {
-                        showAlert = true
-                        alertMessage = "Are you sure you want to go to Dictionary?"
-                    }) {
-                        Label("Dictionary", systemImage: "book.circle")
-                    }
                 } label: {
                     Image(systemName: "line.horizontal.3")
                         .imageScale(.large)
                 }
             )
             .background(
-                NavigationLink(destination: OverviewView(showMenu: $showMenu, navigateToPlayMenu: $navigateToPlayMenu, username: username), isActive: $navigateToOverview) {
-                    EmptyView()
-                }
-                .hidden()
-            )
-            .background(
                 NavigationLink(destination: PlayMenu(shuffle_question_set: 0, username: username), isActive: $navigateToPlayMenu) {
-                    EmptyView()
-                }
-                .hidden()
-            )
-            .background(
-                NavigationLink(destination: DictionaryView(navigateToPlayMenu: $navigateToPlayMenu,username: username), isActive: $navigateToDictionary) {
                     EmptyView()
                 }
                 .hidden()
@@ -605,7 +529,6 @@ struct Question3View_no_time_limit: View {
             }
         )
     }
-    
     func findquestionIndex() -> Int {
         let question_no = randomarray[generatedShuffleQuestionSet][2]
         print("shuffle_question_set for question 2: \(generatedShuffleQuestionSet)")
