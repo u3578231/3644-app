@@ -107,6 +107,7 @@ struct ChartView: View {
                                         .frame(width: CGFloat(5 * dateArray.count - 4) * 28, height: 300)
                                     }
                                 }
+                                .padding(.horizontal, 25)
                             }
                             .padding(.top, -270)
                         }
