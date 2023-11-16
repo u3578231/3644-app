@@ -9,7 +9,6 @@ import SwiftUI
 
 struct DictionaryView: View {
     @State private var searchText = ""
-    @Binding var navigateToPlayMenu: Bool
     let username: String
     let websiteURL = "https://www.tutorialspoint.com/artificial_intelligence/index.htm"
 
@@ -25,7 +24,8 @@ struct DictionaryView: View {
                 let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
                 let fileURL = documentsDirectory.appendingPathComponent("dictionary.json")
                 let jsonData = try Data(contentsOf: fileURL)
-                
+                print("documentsDirectory =\(documentsDirectory)")
+                print("URL =\(fileURL)")
                 let decoder = JSONDecoder()
                 let dictionaryArray = try decoder.decode([[String: String]].self, from: jsonData)
                 
@@ -74,7 +74,7 @@ struct DictionaryView: View {
                             .padding(.top,70)
                         List(filteredWords, id: \.self) { word in
                            NavigationLink(
-                               destination: DictionaryWordView(word: word, navigateToPlayMenu: $navigateToPlayMenu, username: username)
+                               destination: DictionaryWordView(word: word, username: username)
                            ) {
                                Text(word)
                            }
@@ -92,27 +92,13 @@ struct DictionaryView: View {
                     .scrollContentBackground(.hidden)
                     .padding(.top, 290)
                 }
-                NavigationLink(destination: PlayMenu(shuffle_question_set: 0, username: username), isActive: $navigateToPlayMenu) {
-                    EmptyView()
-                }
-                .navigationBarBackButtonHidden(true)
+                .navigationBarBackButtonHidden(false)
                 .navigationBarTitleDisplayMode(.inline)
-                .navigationBarItems(leading: backButton
-                )
                 .navigationTitle("Dictionary")
             }
             .onAppear {
                        createJSONFile()
                    }
-    }
-    private var backButton: some View {
-        Button(action: {
-            navigateToPlayMenu = true
-        }) {
-            Image(systemName: "chevron.left")
-                .font(.title)
-                .foregroundColor(.blue)
-        }
     }
 }
 
@@ -127,9 +113,11 @@ struct LargeTitleNavBarTitle: View {
 
 struct DictionaryWordView: View {
     let word: String
-    @Binding var navigateToPlayMenu: Bool
     let username: String
     @State private var wordData: DictionaryData?
+    @State private var showPurpose = false
+    @State private var showPrinciple = false
+    @State private var showApplications = false
     struct DictionaryData: Codable {
         let purpose: String
         let howDoesItWork: String
@@ -148,30 +136,64 @@ struct DictionaryWordView: View {
                     }
                     .frame(height: geometry.size.height * 0.3)
                 }
-                .overlay(
-                    Group {
-                        if let data = wordData {
-                            VStack(spacing: 20) {
-                                SectionBox(title: "Purpose", content: data.purpose)
-                                    .frame(maxWidth: .infinity)
-                                SectionBox(title: "How does it work?", content: data.howDoesItWork)
-                                    .frame(maxWidth: .infinity)
-                                SectionBox(title: "Example", content: data.example)
-                                    .frame(maxWidth: .infinity)
-                            }
-                            .padding()
-                            .frame(maxWidth: .infinity, alignment: .top)
-                            .padding(.bottom, -50)
-                            .opacity(0.9)
+                if let data = wordData {
+                    HStack(spacing: 20) {
+                        Button(action: {
+                            showPurpose = true
+                            showPrinciple = false
+                            showApplications = false
+                        }) {
+                            Text("Purpose")
+                                .foregroundColor(.white)
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 20)
+                                .background(Color.blue)
+                                .cornerRadius(10)
+                        }
+                        Button(action: {
+                            showPrinciple = true
+                            showPurpose = false
+                            showApplications = false
+                        }) {
+                            Text("How does it work")
+                                .foregroundColor(.white)
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 20)
+                                .background(Color.blue)
+                                .cornerRadius(10)
+                        }
+                        Button(action: {
+                            showApplications = true
+                            showPrinciple = false
+                            showPurpose = false
+                        }) {
+                            Text("Applications")
+                                .foregroundColor(.white)
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 20)
+                                .background(Color.blue)
+                                .cornerRadius(10)
                         }
                     }
-                    .scrollContentBackground(.hidden)
-                    .padding(.top, -140)
-                )
+                    .padding(.top, -830)
+                    VStack{
+                        if showPurpose, let data = wordData {
+                            SectionBox(title: "Purpose", content: data.purpose)
+                                .frame(maxWidth: .infinity)
+                        }
+                        if showPrinciple, let data = wordData {
+                            SectionBox(title: "Working principle", content: data.howDoesItWork)
+                                .frame(maxWidth: .infinity)
+                        }
+                        if showApplications, let data = wordData {
+                            SectionBox(title: "Example", content: data.example)
+                                .frame(maxWidth: .infinity)
+                        }
+                    }
+                    .padding(.top, -690)
+                }
             }
-        }
-        NavigationLink(destination: PlayMenu(shuffle_question_set: 0, username: username), isActive: $navigateToPlayMenu) {
-            EmptyView()
+            .scrollContentBackground(.hidden)
         }
         .onAppear {
             fetchWordData()
