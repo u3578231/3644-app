@@ -130,13 +130,15 @@ struct ContentView_time_limit_heart_attack: View {
                 .padding(.top, 50)
                 .offset(y: -30)
                 HStack {
-                    Button("Next question") {
-                        self.transitionToNextView()
-                    }
                     NavigationLink(destination: Question2View_time_limit_heart_attack(timer: timer, isShowingResultView: $isShowingResultView, generatedShuffleQuestionSet: generatedShuffleQuestionSet, currentMark: $currentMark, username: username, wrongQArray: $wrongQArray, q1_mark: q1_mark),
                                    isActive: $isShowingNextView) {
-                      EmptyView()
+                        Text("Next question")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(RoundedRectangle(cornerRadius: 10).fill(Color.blue))
                     }
+                    .isDetailLink(false)
                 }
                 Text("Time remaining: \(timer.timeRemaining)")
                     .font(.largeTitle)
@@ -147,6 +149,7 @@ struct ContentView_time_limit_heart_attack: View {
                                 isShowingResultView = true
                             }
                         }
+                    .padding(30)
                 }
             .fullScreenCover(isPresented: $isShowingResultView) {
                 ResultView(currentMark: $currentMark, gameplay: $gameplay, username: username)
@@ -296,10 +299,16 @@ struct Question2View_time_limit_heart_attack: View {
                     Button("Next question") {
                         self.transitionToNextView()
                     }
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(RoundedRectangle(cornerRadius: 10).fill(Color.blue))
+                    
                     NavigationLink(destination: Question3View_time_limit_heart_attack(timer: timer, isShowingResultView: $isShowingResultView, generatedShuffleQuestionSet: generatedShuffleQuestionSet, currentMark: $currentMark, username: username, wrongQArray: $wrongQArray, q1_mark: q1_mark, q2_mark: q2_mark),
                                    isActive: $isShowingNextView) {
-                      EmptyView()
+                        EmptyView()
                     }
+                    .isDetailLink(false)
                 }
                 Text("Time remaining: \(timer.timeRemaining)")
                     .font(.largeTitle)
@@ -310,6 +319,7 @@ struct Question2View_time_limit_heart_attack: View {
                                 isShowingResultView = true
                             }
                         }
+                    .padding(30)
                 }
             .fullScreenCover(isPresented: $isShowingResultView) {
                 ResultView(currentMark: $currentMark, gameplay: $gameplay, username: username)
@@ -471,6 +481,7 @@ struct Question3View_time_limit_heart_attack: View {
                                 isShowingResultView = true
                             }
                         }
+                    .padding(30)
             }
             .fullScreenCover(isPresented: $isShowingResultView) {
                 ResultView(currentMark: $currentMark, gameplay: $gameplay, username: username)
