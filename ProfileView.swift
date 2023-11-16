@@ -17,7 +17,10 @@ struct ProfileView: View {
     @State private var isShowingEmptyPasswordAlert = false
     @State private var isShowingSamePasswordAlert = false
     @State private var isShowingPasswordChangedAlert = false
+    @State private var showImagePicker = false
+    @State private var showImagePickerAlert = false
     @FocusState private var isTextFieldFocused: Bool
+    
     var body: some View {
         ZStack {
             Image("background")
@@ -33,22 +36,23 @@ struct ProfileView: View {
                             .font(.title)
                             .fontWeight(.bold)
                             .foregroundColor(.primary)
-                            .multilineTextAlignment(.leading) // Align the text to the left
-                            .frame(maxWidth: .infinity, alignment: .leading) // Expand the frame to fill the available width
-                            .padding(.top, 100) // Move the text higher
-                            .padding(.leading, 20) // Move the text to the right
+                            .multilineTextAlignment(.leading)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.top, 100)
+                            .padding(.leading, 20)
+                        
                         Image(uiImage: profileImage ?? UIImage(systemName: "person")!)
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 150, height: 250)
-                            .cornerRadius(8) // Apply a corner radius to the frame
+                            .frame(width: 150, height: 240)
+                            .cornerRadius(8)
                             .overlay(Rectangle().stroke(Color.white, lineWidth: 4))
-                            .shadow(color: Color.blue.opacity(0.5), radius: 7) // Apply a shadow with blue color and opacity
+                            .shadow(color: Color.blue.opacity(0.5), radius: 7)
                             .onTapGesture {
-                                showCamera = true
+                                showImagePickerAlert = true
                             }
                         
-                        Spacer().frame(height: 80) // Add spacing between the profile picture and the form
+                        Spacer().frame(height: 80)
                         
                         VStack(alignment: .leading) {
                             Text("Username: \(userArray[userIndex].username)")
@@ -59,14 +63,16 @@ struct ProfileView: View {
                                 .padding(.vertical, 20)
                             
                             TextField("New Password", text: $newPassword)
-                                .focused($isTextFieldFocused) // Apply the focused state
+                                .focused($isTextFieldFocused)
                                 .autocapitalization(.none)
                                 .onTapGesture {
-                                    isTextFieldFocused = true // Set the focused state to true
+                                    isTextFieldFocused = true
                                 }
+                            
                             Spacer().frame(height: 0)
                         }
                         .padding(.horizontal)
+                        
                         Section {
                             Button(action: {
                                 changePassword(for: userIndex)
@@ -76,25 +82,26 @@ struct ProfileView: View {
                         }
                         .padding(.horizontal)
                         .padding(.vertical, 10)
-                        .padding(.horizontal)
-                        .padding(.vertical, 10)
                     } else {
                         Text("User not found")
                     }
                 }
                 .padding(.vertical, -210)
             }
+            .navigationBarTitle(Text("Profile"))
             .sheet(isPresented: $showCamera) {
                 CameraView(profileImage: $profileImage)
             }
-            .navigationBarTitle(Text("Profile"))
+            .sheet(isPresented: $showImagePicker) {
+                ImagePickerView(image: $profileImage)
+            }
             .alert(isPresented: $isShowingEmptyPasswordAlert) {
-                        Alert(
-                            title: Text("Warning"),
-                            message: Text("New password cannot be empty."),
-                            dismissButton: .default(Text("OK"))
-                        )
-                    }
+                Alert(
+                    title: Text("Warning"),
+                    message: Text("New password cannot be empty."),
+                    dismissButton: .default(Text("OK"))
+                )
+            }
             .alert(isPresented: $isShowingSamePasswordAlert) {
                 Alert(
                     title: Text("Warning"),
@@ -109,8 +116,21 @@ struct ProfileView: View {
                     dismissButton: .default(Text("OK"))
                 )
             }
+            .alert(isPresented: $showImagePickerAlert) {
+                Alert(
+                    title: Text("Choose an option"),
+                    message: nil,
+                    primaryButton: .default(Text("Camera"), action: {
+                        showCamera = true
+                    }),
+                    secondaryButton: .default(Text("Library"), action: {
+                        showImagePicker = true
+                    })
+                )
+            }
         }
     }
+    
     private func changePassword(for userIndex: Int) {
         let originalPassword = userArray[userIndex].password
         
@@ -127,8 +147,6 @@ struct ProfileView: View {
         userArray[userIndex].password = newPassword
         print("New password: \(userArray[userIndex].password)")
         newPassword = ""
-        
-        // Show a success message
         isShowingPasswordChangedAlert = true
     }
 }
@@ -242,7 +260,44 @@ class CameraViewController: UIViewController {
         output.capturePhoto(with: AVCapturePhotoSettings(), delegate: self)
     }
 }
-
+struct ImagePickerView: UIViewControllerRepresentable {
+    @Binding var image: UIImage?
+    @Environment(\.presentationMode) var presentationMode
+    
+    class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+        let parent: ImagePickerView
+        
+        init(_ parent: ImagePickerView) {
+            self.parent = parent
+        }
+        
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            if let uiImage = info[.originalImage] as? UIImage {
+                parent.image = uiImage
+            }
+            
+            parent.presentationMode.wrappedValue.dismiss()
+        }
+        
+        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+            parent.presentationMode.wrappedValue.dismiss()
+        }
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+    
+    func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePickerView>) -> UIImagePickerController {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = context.coordinator
+        imagePicker.sourceType = .photoLibrary
+        return imagePicker
+    }
+    
+    func updateUIViewController(_ uiViewController: UIImagePickerController, context: UIViewControllerRepresentableContext<ImagePickerView>) {
+    }
+}
 extension CameraViewController: AVCapturePhotoCaptureDelegate {
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         guard let data = photo.fileDataRepresentation() else {
