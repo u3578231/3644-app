@@ -102,12 +102,12 @@ struct ResultView: View {
                             .frame(width: 515, height: 140)
                             .padding(.leading, 117)
                     )
-                    //                            Text("Number of no time limit samples =\(total_sample_no_time_limit)")
-                    //                            Text("Number of time limit easy samples =\(total_sample_time_limit_easy)")
-                    //                        Text("Number of time limit hard samples =\(total_sample_time_limit_hard)")
-                    //                        Text("Compare_no_time_limit = \(String(describing: Compare_no_time_limit))")
-                    //                        Text("Compare_time_limit_easy = \(String(describing: Compare_time_limit_easy))")
-                    //                        Text("Compare_time_limit_hard = \(String(describing: Compare_time_limit_hard))")
+//                        Text("Number of no time limit samples =\(total_sample_no_time_limit)")
+//                        Text("Number of time limit easy samples =\(total_sample_time_limit_easy)")
+//                    Text("Number of time limit hard samples =\(total_sample_time_limit_hard)")
+//                    Text("Compare_no_time_limit = \(String(describing: Compare_no_time_limit))")
+//                    Text("Compare_time_limit_easy = \(String(describing: Compare_time_limit_easy))")
+//                    Text("Compare_time_limit_hard = \(String(describing: Compare_time_limit_hard))")
                     .padding(.top, -150)
                     VStack(spacing: 35){
                         VStack{
