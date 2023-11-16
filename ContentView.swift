@@ -18,7 +18,7 @@ let correctans = ["B: Natural language processing (NLP)", "C: Supervised learnin
 let tips = ["Both robotics and genetic algorithms are not subfields of AI", "Unsupervised learning means providing no guidance to system to analyze the data", "Neural networks contain convolutional and pooling layers for extracting features", "AI aims to possess human brain thinking ability", "Random Forest, Support Vector Machines (SVM), Gradient Boosting are related to classification", "Reinforcement learning learns by having agents as environment sensingand feedbacks as return", "Depth-First-Search and Breadth-First-Search are both uninformed searches", "Q-learning has a maximizing component but TDL does not", "State space graph analyzes the possible states in a problem domain while search tree searches the solution from initial state to goal state", "DFS will visit all the edges and nodes once in the worst case", "ReLU is an activation function to control neural network output"]
 let dictionary_word = ["Supervised learning", "Unsupervised learning", "Reinforcement learning", "Artificial intelligence", "Convolutional layers"]
 let dictionary_purpose = ["model learns from labeled training data to make predictions or classify new, unseen data", "explore and extract insights from the data, uncover hidden patterns", "maximize a cumulative reward signal over a sequence of actions taken by the agent in a dynamic environment", "create intelligent systems that can perceive, reason, learn, and make decisions or predictions", "extract spatial hierarchies of features from input data"]
-let dictionary_how_does_it_work = ["1. the training data is collected or generated\n 2. the data is split into two sets: the training set used to train the model and the test set\n 3. fine-tuning hyperparameters", "1. analyzing the input data and finding inherent patterns or similarities OR reduce the number of input features while preserving important information \n2. iteratively updating model parameters or optimizing certain criteria to minimize the differences or maximize the similarities between data points", "1. interacts with the environment by taking actions and receiving feedback in the form of rewards or penalties based on its actions.\n2. learns by updating its policy based on the rewards received and the observed consequences of its actions", "1. training AI model to extract patterns\n2. fine-tuning models\n3. develop human-like functionalies", "1. application of convolutional filters or kernels to the input data\n2. shift filters across the input to capture patterns\n3. feature map generated, which is the response of a particular filter"]
+let dictionary_how_does_it_work = ["1. the training data is collected or generated\n2. the data is split into two sets: the training set used to train the model and the test set\n3. fine-tuning hyperparameters\n4. Factors affecting performance: Balancing and cleaniness of data, diversity of data\n5. Overfitting occurs if the model trains for a long epoch or is too powerful.\n6. Underfitting occurs if the model trains for a short period of time or is not powerful enough", "1. analyzing the input data and finding inherent patterns or similarities OR reduce the number of input features while preserving important information \n2. iteratively updating model parameters or optimizing certain criteria to minimize the differences or maximize the similarities between data points\n3. Common clustering algorithms are K-means clustering, principal component analysis\n4. Some association rule learning algorithms are Apriori algorithm and ECLAT algorithm\n5. Usually unsupervised learning still starts with supervised learning to learn prediction of class labels, boundary boxes, and then continue without training data for unsupervised learning tasks", "1. interacts with the environment by taking actions and receiving feedback in the form of rewards or penalties based on its actions.\n2. learns by updating its policy based on the rewards received and the observed consequences of its actions\n3. RL algorithms can be broadly categorized as model-free and model-based. Model-free algorithms do not build an explicit model of the environment, or more rigorously, the MDP. They are closer to trial-and-error algorithms that run experiments with the environment using actions and derive the optimal policy from it directly.\n4. Policy-based approaches suffer from a high variance which manifests as instabilities during the training process. Value-based approaches, though more stable, are not suitable to model continuous action spaces.", "1. training AI model to extract patterns by neural network, Transformer models, stable diffusion models\n2. fine-tuning models' parameters to avoid overfitting and achieve highest precision and recall\n3. develop human-like functionalies by adopting the model to suit different purposes, e.g. regression, segmentation tasks\n4. Subfields of AI: Machine Learning and Neural Network\n5. Technology of AI required: GPUs for training datasets, memory for storing datasets, huge and diverse datasets for gression, classification tasks, APIs to call libraries for training data ", "1. application of convolutional filters or kernels to the input data\n2. shift filters across the input to capture patterns\n3. feature map generated, which is the response of a particular filter\n4. Different from pooling layers, convolution layers reduce the dimensionality of features, while pooling layers upscale the features\n5. Concepts of stride, padding are applied to convolutional filters\n6. More convolutional filters help extract fine-grained details at the risk of overfitting\n7. Convolutional layers have to be followed by pooling layers to gather fine-scale and large-scale feature maps"]
 let dictionary_example = ["1. classifying spam and non-spam emails\n 2.sentiment analysis", "1. Anomaly detection\n 2. group customers based on their purchasing behavior", "1. autonomous driving agent.\n2. chess games", "1. Face detection\n2. voice assistants\n3. recommendation systems", "1. Detection of edges in image\n2. identify certain sequence pattern in genome"]
 var dictionaryArray: [[String: String]] = []
 struct BackgroundImageView: View {
@@ -148,7 +148,12 @@ struct ContentView_time_limit: View {
                     .disabled(showCorrectMessage || showWrongMessage)
                     NavigationLink(destination: Question2View_time_limit(generatedShuffleQuestionSet: generatedShuffleQuestionSet, currentMark: $currentMark, username: username, wrongQArray: $wrongQArray, q1_mark: q1_mark).environmentObject(timerManager)) {
                         Text("Next question")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(RoundedRectangle(cornerRadius: 10).fill(Color.blue))
                     }
+                    .isDetailLink(false)
                     .onDisappear(){
                         checkAnswerAndIncrementMark()
                         pausedTimeRemaining = timerManager.timeRemaining
@@ -229,8 +234,6 @@ struct ContentView_time_limit: View {
         }
     func findquestionIndex() -> Int {
         let question_no = randomarray[generatedShuffleQuestionSet][0]
-        print("shuffle_question_set for question 1: \(generatedShuffleQuestionSet)")
-        print("question_no_3: \(question_no)")
         return question_no
     }
     func handleTimerFinished(answercorrect: Bool) {
@@ -344,7 +347,12 @@ struct Question2View_time_limit: View {
                     .disabled(showCorrectMessage || showWrongMessage)
                     NavigationLink(destination: Question3View_time_limit(generatedShuffleQuestionSet: generatedShuffleQuestionSet, currentMark: $currentMark, username: username, wrongQArray: $wrongQArray, q1_mark: q1_mark,q2_mark: q2_mark).environmentObject(timerManager)) {
                         Text("Next question")
-                    }
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .padding()
+                                .background(RoundedRectangle(cornerRadius: 10).fill(Color.blue))
+                        }
+                        .isDetailLink(false)
                     .onDisappear(){
                         checkAnswerAndIncrementMark()
                         pausedTimeRemaining = timerManager.timeRemaining
@@ -359,7 +367,7 @@ struct Question2View_time_limit: View {
                     }
                     Text("Time Remaining: \(timerManager.timeRemaining)")
                         .font(.largeTitle)
-                        .padding()
+                        .padding(100)
                     
                     Spacer()
                 }
@@ -567,10 +575,14 @@ struct Question3View_time_limit: View {
                 .disabled(showCorrectMessage || showWrongMessage)
                 Button(action: {
                     generateCurrentDateTime(q1_mark: q1_mark, q2_mark: q2_mark, q3_mark: q3_mark, currentMark: $currentMark)
-                   self.showResultView = true
-               }) {
-                   Text("See Result")
-               }
+                    self.showResultView = true
+                }) {
+                    Text("See Result")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.blue))
+                }
                 .onDisappear(){
                     checkAnswerAndIncrementMark()
                     pausedTimeRemaining = timerManager.timeRemaining
@@ -812,22 +824,19 @@ struct ContentView_Previews: PreviewProvider {
 }
 struct OverviewView: View {
     @State private var isShowingPlayMenu = false
-    @Binding var showMenu: Bool
-    @Binding var navigateToPlayMenu: Bool
     @EnvironmentObject var timer: TimerManager
     @EnvironmentObject var timer1: TimerManager_heart_attack
-    @State private var showPlayMenu = false
     @State private var selectedTab = 0
     let username: String
     @Environment(\.presentationMode) var presentationMode // Add this line
 
     var body: some View {
         ZStack {
+//            LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]), startPoint: .top, endPoint: .bottom)
             Image("background")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
-            
             VStack {
                 Text("Name: \(username)")
                     .font(.title)
@@ -865,7 +874,6 @@ struct OverviewView: View {
                 .padding(.top, 150)
                 .scrollContentBackground(.hidden)
             }
-            
             VStack {
                 if let userIndex = userArray.firstIndex(where: { $0.username == username }) {
                     let markArray = userArray[userIndex].MarkArray.map { String($0) }
@@ -890,26 +898,10 @@ struct OverviewView: View {
             .cornerRadius(10)
             .padding()
             .offset(y: -350)
+            .navigationViewStyle(StackNavigationViewStyle())
         }
-        
-        NavigationLink(destination: PlayMenu(shuffle_question_set: 0, username: username), isActive: $navigateToPlayMenu) {
-            EmptyView()
-        }
-        .padding()
-        .padding()
-        .navigationBarItems(leading: backButton)
-        .navigationBarBackButtonHidden(true)
+        .navigationBarBackButtonHidden(false)
         .navigationTitle("Overview")
-    }
-
-    private var backButton: some View {
-        Button(action: {
-            navigateToPlayMenu = true
-        }) {
-            Image(systemName: "chevron.left")
-                .font(.title)
-                .foregroundColor(.blue)
-        }
     }
 }
 
