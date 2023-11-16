@@ -63,7 +63,7 @@ struct ContentView_no_time_limit: View {
     }
     var body: some View {
         ZStack {
-            Image("background") // Set the desired image as the background
+            Image("background")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
@@ -96,16 +96,22 @@ struct ContentView_no_time_limit: View {
                         print("wrong_q_array =", wrongQArray)
                     }
                 }
-                .padding(.top, 150)
+                .padding(.top, 50)
                 .offset(y: -30)
                 
                 HStack {
                     Button("Next question") {
                         self.transitionToNextView()
                     }
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(RoundedRectangle(cornerRadius: 10).fill(Color.blue))
+
                     NavigationLink(destination: Question2View_no_time_limit(generatedShuffleQuestionSet: generatedShuffleQuestionSet, currentMark: $currentMark, username: username, wrongQArray: $wrongQArray, q1_mark: q1_mark, tipPressed: $tipPressed, tipPressed_q2: $tipPressed_q2, tipPressed_q3: $tipPressed_q3), isActive: $isShowingNextView) {
                         EmptyView()
                     }
+                    .isDetailLink(false)
                     .padding()
                     Button(action: {
                         showTips.toggle()
@@ -269,8 +275,12 @@ struct Question2View_no_time_limit: View {
                 
                 HStack {
                     NavigationLink(destination: Question3View_no_time_limit(generatedShuffleQuestionSet: generatedShuffleQuestionSet, currentMark: $currentMark, username: username, wrongQArray: $wrongQArray, q1_mark: q1_mark, q2_mark: q2_mark, tipPressed: $tipPressed, tipPressed_q2: $tipPressed_q2,tipPressed_q3: $tipPressed_q3)) {
-                        Text("Next question")
-                    }
+                        Text("Next Question")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .padding()
+                                .background(RoundedRectangle(cornerRadius: 10).fill(Color.blue))
+                        }
                     .padding()
                     Button(action: {
                         showTips.toggle()
@@ -465,7 +475,11 @@ struct Question3View_no_time_limit: View {
                        self.showResultView = true
                    }) {
                        Text("See Result")
-                   }
+                               .font(.headline)
+                               .foregroundColor(.white)
+                               .padding()
+                               .background(RoundedRectangle(cornerRadius: 10).fill(Color.blue))
+                       }
                     .padding()
                     Button(action: {
                         showTips.toggle()
